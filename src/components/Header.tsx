@@ -20,10 +20,11 @@ export default function Header() {
 
   const navLinks = [
     { href: "/services", label: "الخدمات" },
-    { href: "/faq", label: "الأسئلة الشائعة" },
     { href: "/academy", label: "JL Community" },
     { href: "/pricing", label: "التسعير" },
     { href: "/about", label: "من نحن" },
+    { href: "/faq", label: "الأسئلة الشائعة" },
+    { href: "/contact", label: "اتصل بنا" },
   ];
 
   return (
