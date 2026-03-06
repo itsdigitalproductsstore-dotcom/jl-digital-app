@@ -1,0 +1,27 @@
+﻿
+> jl-digital-app@0.1.0 build
+> next build
+
+ظû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+
+node.exe : ظأب The "middleware" file 
+convention is deprecated. Please use 
+"proxy" instead. Learn more: https://ne
+xtjs.org/docs/messages/middleware-to-pr
+oxy
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpeci 
+   fied: (ظأب The "middle...leware-to  
+  -proxy:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCo 
+   mmandError
+ 
+  Creating an optimized production build ...
+ظ£ô Compiled successfully in 7.2s
+  Running TypeScript ...
+

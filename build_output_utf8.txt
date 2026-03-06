@@ -1,0 +1,192 @@
+﻿
+> jl-digital-app@0.1.0 build
+> next build
+
+   ظû▓ Next.js 15.1.7
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ظ£ô Compiled successfully
+   Linting and checking validity of types ...
+
+./src/app/academy/page.tsx
+5:33  Warning: 'Lock' is defined but never used.  @typescript-eslint/no-unused-vars
+27:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+30:12  Warning: 'user' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+30:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+83:32  Warning: 'lessonsRes' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+83:44  Warning: 'progRes' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+92:39  Warning: 'allL' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+112:8  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+250:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/academy/[courseId]/community/page.tsx
+31:42  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+32:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+33:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+73:8  Warning: React Hook useEffect has missing dependencies: 'fetchPosts' and 'supabase'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+186:42  Warning: 'courseId' is defined but never used.  @typescript-eslint/no-unused-vars
+187:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+188:80  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/academy/[courseId]/learn/[lessonId]/page.tsx
+116:8  Warning: React Hook useEffect has missing dependencies: 'router' and 'supabase'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/academy/[courseId]/live/page.tsx
+5:58  Warning: 'Mic' is defined but never used.  @typescript-eslint/no-unused-vars
+5:63  Warning: 'MicOff' is defined but never used.  @typescript-eslint/no-unused-vars
+5:71  Warning: 'Monitor' is defined but never used.  @typescript-eslint/no-unused-vars
+21:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+22:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+23:42  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+24:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+25:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+31:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+49:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+67:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+80:8  Warning: React Hook useEffect has missing dependencies: 'fetchMessages' and 'supabase'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+101:8  Warning: React Hook useEffect has missing dependencies: 'fetchMessages' and 'supabase'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+121:11  Warning: 'isOwner' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/academy/[courseId]/page.tsx
+18:42  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+19:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+20:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+21:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+22:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+23:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+56:8  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+106:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+221:48  Warning: 'mi' is defined but never used.  @typescript-eslint/no-unused-vars
+235:87  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+357:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/actions.ts
+4:62  Warning: 'MarqueeItem' is defined but never used.  @typescript-eslint/no-unused-vars
+4:80  Warning: 'VideoItem' is defined but never used.  @typescript-eslint/no-unused-vars
+46:9  Warning: 'bucket' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+500:11  Warning: 'data' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/admin/page.tsx
+16:5  Warning: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+21:5  Warning: 'Wifi' is defined but never used.  @typescript-eslint/no-unused-vars
+22:5  Warning: 'WifiOff' is defined but never used.  @typescript-eslint/no-unused-vars
+27:5  Warning: 'Play' is defined but never used.  @typescript-eslint/no-unused-vars
+29:5  Warning: 'Settings2' is defined but never used.  @typescript-eslint/no-unused-vars
+30:5  Warning: 'Video' is defined but never used.  @typescript-eslint/no-unused-vars
+97:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+100:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+240:12  Warning: 'deleteId' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+240:22  Warning: 'setDeleteId' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+243:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+305:205  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+340:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+341:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+542:8  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+644:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+645:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+646:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+647:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+648:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+650:12  Warning: 'actionLoading' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+774:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+788:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+802:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+816:42  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+838:11  Warning: 'inputCls' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+840:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+939:95  Warning: 'li' is defined but never used.  @typescript-eslint/no-unused-vars
+1059:8  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+1297:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1353:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/dashboard/admin/page.tsx
+3:31  Warning: 'useCallback' is defined but never used.  @typescript-eslint/no-unused-vars
+6:30  Warning: 'Edit2' is defined but never used.  @typescript-eslint/no-unused-vars
+8:14  Warning: 'X' is defined but never used.  @typescript-eslint/no-unused-vars
+8:38  Warning: 'CheckCircle' is defined but never used.  @typescript-eslint/no-unused-vars
+9:3  Warning: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+11:38  Warning: 'Currency' is defined but never used.  @typescript-eslint/no-unused-vars
+15:3  Warning: 'updateMarqueeItem' is defined but never used.  @typescript-eslint/no-unused-vars
+19:3  Warning: 'updateVideo' is defined but never used.  @typescript-eslint/no-unused-vars
+25:3  Warning: 'togglePageVisibility' is defined but never used.  @typescript-eslint/no-unused-vars
+27:3  Warning: 'updateService' is defined but never used.  @typescript-eslint/no-unused-vars
+36:3  Warning: 'assignLeadToStaff' is defined but never used.  @typescript-eslint/no-unused-vars
+37:3  Warning: 'createProject' is defined but never used.  @typescript-eslint/no-unused-vars
+109:10  Warning: 'services' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+109:20  Warning: 'setServices' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+112:10  Warning: 'editingMarquee' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+112:26  Warning: 'setEditingMarquee' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+117:10  Warning: 'editingVideo' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+117:24  Warning: 'setEditingVideo' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+125:10  Warning: 'editingService' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+125:26  Warning: 'setEditingService' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+134:10  Warning: 'staffMembers' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+137:10  Warning: 'leads' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+140:10  Warning: 'tasks' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+143:10  Warning: 'lmsCourses' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+143:22  Warning: 'setLmsCourses' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+351:9  Warning: 'handleDeleteService' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+360:9  Warning: 'handleToggleService' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+415:9  Warning: 'handleUpdateLeadStatus' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+437:9  Warning: 'handleUpdateTaskStatus' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+686:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+706:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/dashboard/layout.tsx
+2:10  Warning: 'LayoutDashboard' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/page.tsx
+3:20  Warning: 'useEffect' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/Footer.tsx
+4:38  Warning: 'Currency' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/VideoHub.tsx
+99:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/context/ConfigContext.tsx
+65:7  Warning: 'defaultConfig' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+node.exe : Failed to compile.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (F 
+   ailed to compile.:String) [], RemoteExcept  
+  ion
+    + FullyQualifiedErrorId : NativeCommandErr 
+   or
+ 
+
+./src/app/api/academy/enroll/route.ts:29:56
+Type error: Property 'get' does not exist on 
+type 'Promise<ReadonlyRequestCookies>'.
+
+[0m [90m 27 |[39m         {[0m
+[0m [90m 28 |[39m             
+cookies[33m:[39m {[0m
+[0m[31m[1m>[22m[39m[90m 29 |[39m        
+         [36mget[39m(name[33m:[39m string) 
+{ [36mreturn[39m cookieStore[33m.[39m[36mg
+et[39m(name)[33m?[39m[33m.[39mvalue[33m;
+[39m }[33m,[39m[0m
+[0m [90m    |[39m                           
+                             
+[31m[1m^[22m[39m[0m
+[0m [90m 30 |[39m                 
+[36mset[39m(name[33m:[39m 
+string[33m,[39m value[33m:[39m 
+string[33m,[39m options[33m:[39m 
+[33mCookieOptions[39m) {[0m
+[0m [90m 31 |[39m                     
+cookieStore[33m.[39m[36mset[39m({ 
+name[33m,[39m value[33m,[39m 
+[33m...[39moptions })[33m;[39m[0m
+[0m [90m 32 |[39m                 
+}[33m,[39m[0m
+Next.js build worker exited with code: 1 and 
+signal: null
