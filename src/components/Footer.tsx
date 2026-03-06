@@ -102,7 +102,10 @@ export default function Footer() {
             © 2024 {config?.siteNameAr || "JL Digital"}. جميع الحقوق محفوظة.
           </p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="text-gray-500 hover:text-white transition-colors text-sm">
+            <Link href="/faq" className="text-gray-500 hover:text-white transition-colors text-sm">
+              الأسئلة الشائعة
+            </Link>
+            <Link href="/privacy-policy" className="text-gray-500 hover:text-white transition-colors text-sm">
               سياسة الخصوصية
             </Link>
             <Link href="/terms" className="text-gray-500 hover:text-white transition-colors text-sm">

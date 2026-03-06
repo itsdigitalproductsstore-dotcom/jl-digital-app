@@ -1,26 +1,231 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --accent: #2a2a2a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-almarai), Arial, sans-serif;
+  --font-mono: ui-monospace, monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-almarai), Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+[dir="rtl"] {
+  font-family: var(--font-almarai), Arial, sans-serif;
+}
+
+[dir="rtl"] .font-sans {
+  font-family: var(--font-almarai), Arial, sans-serif;
+}
+
+/* Global Noise Overlay Effect */
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 150px;
+}
+
+/* RTL-specific Glassmorphism Card */
+.glass-card {
+  background: linear-gradient(to bottom, rgba(23, 23, 23, 0.8), black);
+  border: 1px solid rgb(31, 41, 55);
+  border-radius: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+[dir="rtl"] .glass-card {
+  background: linear-gradient(to left, rgba(23, 23, 23, 0.8), black);
+}
+
+/* Currency Selector Styles */
+.currency-selector {
+  position: relative;
+  display: inline-block;
+}
+
+.currency-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: rgb(17, 24, 39);
+  border: 1px solid rgb(55, 65, 81);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  z-index: 50;
+  min-width: 150px;
+}
+
+[dir="rtl"] .currency-dropdown {
+  right: auto;
+  left: 0;
+}
+
+.currency-option {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.currency-option:hover {
+  background: rgb(31, 41, 55);
+}
+
+.currency-option.active {
+  background: rgb(31, 41, 55);
+  color: white;
+}
+
+/* GSAP Marquee Styles */
+.marquee-container {
+  overflow: hidden;
+  position: relative;
+  padding: 1rem 0;
+}
+
+.marquee-track {
+  display: flex;
+  white-space: nowrap;
+}
+
+.marquee-content {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+[dir="rtl"] .marquee-content {
+  animation: marquee-rtl 30s linear infinite;
+}
+
+@keyframes marquee-rtl {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* Video Grid Styles */
+.video-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .video-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .video-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.video-card {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 2rem;
+  overflow: hidden;
+  background: rgb(17, 24, 39);
+  border: 1px solid rgb(31, 41, 55);
+}
+
+.video-card iframe,
+.video-card video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Page Manager Styles */
+.page-toggle {
+  position: relative;
+  display: inline-flex;
+  height: 1.5rem;
+  width: 2.75rem;
+  align-items: center;
+  border-radius: 9999px;
+  transition: background-color 0.2s;
+}
+
+.page-toggle-checked {
+  background: rgb(34, 197, 94);
+}
+
+.page-toggle-unchecked {
+  background: rgb(55, 65, 81);
+}
+
+/* Upload Zone Styles */
+.upload-zone {
+  border: 2px dashed rgb(55, 65, 81);
+  border-radius: 2rem;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.upload-zone:hover {
+  border-color: rgb(107, 114, 128);
+}
+
+.upload-zone.dragover {
+  border-color: white;
+  background: rgba(17, 24, 39, 0.5);
+}
+
+/* Form Styles for RTL */
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  text-align: right;
+}
+
+[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+/* Admin Sidebar RTL */
+[dir="rtl"] .admin-sidebar {
+  border-left: 1px solid rgb(31, 41, 55);
+  border-right: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
 }

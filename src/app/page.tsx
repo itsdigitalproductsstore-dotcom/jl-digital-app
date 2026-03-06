@@ -1,65 +1,95 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react";
+import LeadModal from "@/components/LeadModal";
+import MagneticButton from "@/components/MagneticButton";
+import InteractiveFeatures from "@/components/InteractiveFeatures";
+import StackingCards from "@/components/StackingCards";
+import Marquee from "@/components/Marquee";
+import Header from "@/components/Header";
+import VideoHub from "@/components/VideoHub";
+import Footer from "@/components/Footer";
+import FAQPreview from "@/components/FAQPreview";
+import { useConfig } from "@/context/ConfigContext";
+import { RefreshCw } from "lucide-react";
 
 export default function Home() {
+  const { config, isLoading } = useConfig();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <RefreshCw className="w-8 h-8 text-white animate-spin" />
+      </div>
+    );
+  }
+
+  const marqueeText = config?.marqueeItems
+    ?.filter(item => item.isActive)
+    .map(item => item.textAr || item.text) || [
+      "🚀 بناء الفنلز عالية التحويل",
+      "📈 إعلانات مدفوعة بدقة",
+      "🎬 إنتاج محتوى احترافي",
+      "💡 أتمتة العمليات التجارية",
+      "📊 تحليلات بيانات متقدمة",
+      "🏆 حلول تسويق متكاملة",
+    ];
+
+  const videos = config?.videos?.filter(v => v.isActive).map(v => ({
+    id: v.id,
+    title: v.title,
+    description: v.description,
+    url: v.url,
+  })) || [
+      { id: "1", title: "مقدمة عن خدماتنا", description: "استكشف كيف نحول وجودك الرقمي", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+      { id: "2", title: "بناء Funnels", description: "شرح تفصيلي لعملية بناء Funnel", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+      { id: "3", title: "استراتيجيات الإعلانات", description: "كيف نضمن عائد استثمار عالي", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+    ];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="relative min-h-screen font-sans bg-black flex flex-col items-center justify-start overflow-x-hidden">
+      <div className="fixed inset-0 opacity-[0.03] pointer-events-none noise-overlay z-0"></div>
+
+      <Header />
+
+      <section className="relative z-10 flex flex-col items-center justify-center text-center px-6 sm:px-12 w-full max-w-5xl min-h-screen pt-20">
+        <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
+          {config?.heroTitleAr || "النمو الطموح يلتقي بالدقّة الرقمية."}<br />
+          <span className="text-gray-500">{config?.heroSubtitleAr || "دقة رقمية متناهية"}</span>
+        </h1>
+
+        <p className="text-xl sm:text-2xl text-gray-400 mb-4 max-w-3xl font-light">
+          {config?.heroSubtitleAr || "أداة بيانات عالية المستوى، مبنية لتنفّذ بروتوكول بناء كامل يربط هندسة الفلنز، الإعلانات المدفوعة، إنتاج المحتوى، الذكاء بالبيانات، أتمتة العمليات وهندسة العلامة، ليحوّل كل زيارة إلى فرصة نمو حقيقية."}
+        </p>
+
+        {config?.heroSmallTextAr && (
+          <p className="text-lg text-gray-500 mb-12 max-w-2xl">
+            {config?.heroSmallTextAr}
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        )}
+
+        <MagneticButton
+          onClick={() => setIsModalOpen(true)}
+          className="bg-white text-black px-10 py-5 text-xl font-bold hover:bg-gray-200 transition-colors shadow-[0_0_30px_rgba(255,255,255,0.1)] active:scale-95"
+        >
+          {config?.heroCtaTextAr || "احجز جلسة استراتيجية الآن"}
+        </MagneticButton>
+      </section>
+
+      <Marquee content={marqueeText} />
+
+      <VideoHub videos={videos} />
+
+      <InteractiveFeatures />
+
+      <StackingCards />
+
+      <FAQPreview />
+
+      <Footer />
+
+      <LeadModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }

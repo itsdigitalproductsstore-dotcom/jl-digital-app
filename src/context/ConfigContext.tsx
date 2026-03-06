@@ -119,12 +119,19 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const refreshConfig = useCallback(async () => {
+    if (typeof window === "undefined") return;
     setIsLoading(true);
     try {
-      const response = await fetch('/api/config', { 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      const response = await fetch('/api/config', {
         cache: 'no-store',
-        next: { revalidate: 0 }
+        next: { revalidate: 0 },
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
+
       if (response.ok) {
         const data = await response.json();
         setConfig(data.settings);
@@ -190,11 +197,11 @@ export function useConfig() {
 
 export function usePrice() {
   const { currency, convertPrice, getCurrencySymbol } = useConfig();
-  
+
   const formatPrice = (priceInOMR: number, showCurrency = true) => {
     const converted = convertPrice(priceInOMR);
     const symbol = getCurrencySymbol();
-    
+
     if (currency === 'USD') {
       return showCurrency ? `$${converted.toLocaleString()}` : converted.toLocaleString();
     }

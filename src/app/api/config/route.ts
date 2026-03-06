@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import { getSiteSettings, getMarqueeItems, getVideos, getServices, getFeatureCards, createServerSupabaseClient } from "@/utils/supabase/server-data";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const supabase = await createServerSupabaseClient();
-    
+
     const [settings, marqueeItems, videos, services, featureCards] = await Promise.all([
       getSiteSettings(),
       getMarqueeItems(),
