@@ -9,7 +9,6 @@ import Marquee from "@/components/Marquee";
 import Header from "@/components/Header";
 import VideoHub from "@/components/VideoHub";
 import Footer from "@/components/Footer";
-import FAQPreview from "@/components/FAQPreview";
 import { useConfig } from "@/context/ConfigContext";
 import { RefreshCw } from "lucide-react";
 
@@ -84,8 +83,6 @@ export default function Home() {
       <InteractiveFeatures />
 
       <StackingCards />
-
-      <FAQPreview />
 
       <Footer />
 
