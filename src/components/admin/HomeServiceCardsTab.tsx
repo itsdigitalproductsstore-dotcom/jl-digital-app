@@ -36,7 +36,7 @@ export default function HomeServiceCardsTab({ refreshTrigger }: HomeServiceCards
         label: '',
         description: '',
         image_url: '',
-        order: 0,
+        order_index: 0,
         is_active: true
     });
 
