@@ -1,7 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createServerSupabaseClient, type SiteSettings, type MarqueeItem, type VideoItem, type FAQItem } from "@/utils/supabase/server-data";
+import { createServerSupabaseClient, type SiteSettings, type MarqueeItem, type VideoItem } from "@/utils/supabase/server-data";
+import type { FAQItem } from "@/utils/supabase/server-data";
+
 export type { FAQItem };
 
 export async function updateSiteSettings(settings: Partial<SiteSettings>) {
@@ -71,6 +73,27 @@ export async function uploadAsset(file: File, type: 'logo' | 'favicon') {
 
   revalidatePath('/');
   return { success: true, url: publicUrl };
+}
+
+export async function uploadServiceCardImage(file: File): Promise<string> {
+  const supabase = await createServerSupabaseClient();
+
+  const fileExt = file.name.split('.').pop();
+  const fileName = `service-card-${Date.now()}.${fileExt}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from('images')
+    .upload(fileName, file);
+
+  if (uploadError) {
+    throw new Error(uploadError.message);
+  }
+
+  const { data: { publicUrl } } = supabase.storage
+    .from('images')
+    .getPublicUrl(fileName);
+
+  return publicUrl;
 }
 
 export async function addMarqueeItem(text: string, textAr: string) {
@@ -1142,4 +1165,106 @@ export async function getFAQItems(): Promise<FAQItem[]> {
   }
 
   return data.faq_items as FAQItem[];
+}
+
+export async function addHomeServiceCard(
+  title: string,
+  label: string,
+  description: string,
+  imageUrl: string
+) {
+  const supabase = await createServerSupabaseClient();
+
+  // Get the current max order
+  const { data: maxOrderData } = await supabase
+    .from('home_service_cards')
+    .select('order')
+    .order('order', { ascending: false })
+    .limit(1)
+    .single();
+
+  const nextOrder = maxOrderData ? maxOrderData.order + 1 : 1;
+
+  const { error } = await supabase
+    .from('home_service_cards')
+    .insert({
+      title,
+      label,
+      description,
+      image_url: imageUrl,
+      order: nextOrder,
+      is_active: true
+    });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/');
+  revalidatePath('/dashboard/admin');
+  return { success: true };
+}
+
+export async function updateHomeServiceCard(
+  id: string,
+  title: string,
+  label: string,
+  description: string,
+  imageUrl: string,
+  order: number
+) {
+  const supabase = await createServerSupabaseClient();
+
+  const { error } = await supabase
+    .from('home_service_cards')
+    .update({
+      title,
+      label,
+      description,
+      image_url: imageUrl,
+      order
+    })
+    .eq('id', id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/');
+  revalidatePath('/dashboard/admin');
+  return { success: true };
+}
+
+export async function deleteHomeServiceCard(id: string) {
+  const supabase = await createServerSupabaseClient();
+
+  const { error } = await supabase
+    .from('home_service_cards')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/');
+  revalidatePath('/dashboard/admin');
+  return { success: true };
+}
+
+export async function toggleHomeServiceCard(id: string, isActive: boolean) {
+  const supabase = await createServerSupabaseClient();
+
+  const { error } = await supabase
+    .from('home_service_cards')
+    .update({ is_active: isActive })
+    .eq('id', id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/');
+  revalidatePath('/dashboard/admin');
+  return { success: true };
 }

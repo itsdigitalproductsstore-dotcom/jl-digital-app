@@ -1,236 +1,140 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { TextPlugin } from 'gsap/TextPlugin';
-import { useConfig } from '@/context/ConfigContext';
+import { useEffect, useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import { RefreshCw } from 'lucide-react';
 
-gsap.registerPlugin(TextPlugin);
-
-const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
-
-interface FeatureCardData {
-  id: string;
-  titleAr: string;
-  descriptionAr: string;
-  badgeLeftAr: string;
-  badgeRightAr: string;
-  iconType: string;
-  accentColor: string;
-  orderIndex: number;
-  isActive: boolean;
+interface HomeServiceCard {
+    id: string;
+    title: string;
+    label: string | null;
+    description: string;
+    image_url: string;
+    order: number;
+    is_active: boolean;
 }
 
-const Shuffler = ({ card }: { card: FeatureCardData }) => {
-    const textRef = useRef<HTMLDivElement>(null);
-    const originalText = card.titleAr;
-    let interval: NodeJS.Timeout;
-
-    const handleMouseEnter = () => {
-        let iteration = 0;
-        clearInterval(interval);
-
-        interval = setInterval(() => {
-            if (textRef.current) {
-                textRef.current.innerText = originalText
-                    .split("")
-                    .map((letter, index) => {
-                        if (index < iteration) {
-                            return originalText[index];
-                        }
-                        return chars[Math.floor(Math.random() * chars.length)];
-                    })
-                    .join("");
-
-                if (iteration >= originalText.length) {
-                    clearInterval(interval);
-                }
-
-                iteration += 1 / 3;
-            }
-        }, 30);
-    };
-
-    const handleMouseLeave = () => {
-        clearInterval(interval);
-        if (textRef.current) textRef.current.innerText = originalText;
-    };
-
-    return (
-        <div
-            className="p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all duration-500 group cursor-crosshair overflow-hidden relative shadow-[0_0_30px_rgba(0,0,0,0.5)]"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            dir="rtl"
-            style={{
-                boxShadow: `0 0 30px ${card.accentColor}15`
-            }}
-        >
-            <div className="text-gray-500 text-sm font-mono mb-6 flex justify-between">
-                <span>{card.badgeRightAr}</span>
-                <span style={{ color: `${card.accentColor}80` }} className="group-hover:opacity-80 transition-colors">{card.badgeLeftAr}</span>
-            </div>
-            <h3
-                ref={textRef}
-                className="text-2xl sm:text-3xl font-bold tracking-tight text-white min-h-[2.5rem]"
-            >
-                {originalText}
-            </h3>
-            <p className="text-gray-500 mt-4 leading-relaxed font-light">
-                {card.descriptionAr}
-            </p>
-        </div>
-    );
-};
-
-const Typewriter = ({ card }: { card: FeatureCardData }) => {
-    const logRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!logRef.current) return;
-
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
-
-        tl.to(logRef.current, {
-            duration: 3,
-            text: "> جارٍ تأسيس الاتصال الآمن... [تم]<br/>> توجيه تدفق البيانات... [تم]<br/>> في انتظار نبضة العميل القادم..._",
-            ease: "none"
-        });
-
-    }, []);
-
-    return (
-        <div 
-            className="p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all duration-500 group relative overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)]" 
-            dir="rtl"
-            style={{
-                boxShadow: `0 0 30px ${card.accentColor}15`
-            }}
-        >
-            <div className="text-gray-500 text-sm font-mono mb-6 flex justify-between">
-                <span>{card.badgeRightAr}</span>
-                <span style={{ color: `${card.accentColor}80` }} className="group-hover:opacity-80 transition-colors">{card.badgeLeftAr}</span>
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
-                {card.titleAr}
-            </h3>
-            <div
-                ref={logRef}
-                className="font-mono text-xs sm:text-sm bg-black/50 p-4 rounded-xl min-h-[100px] border"
-                style={{ 
-                    color: `${card.accentColor}cc`,
-                    borderColor: `${card.accentColor}25`,
-                    backgroundColor: `${card.accentColor}08`
-                }}
-            >
-                _
-            </div>
-        </div>
-    );
-};
-
-const Scheduler = ({ card }: { card: FeatureCardData }) => {
-    return (
-        <div 
-            className="p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all duration-500 group relative overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)]" 
-            dir="rtl"
-            style={{
-                boxShadow: `0 0 30px ${card.accentColor}15`
-            }}
-        >
-            <div className="text-gray-500 text-sm font-mono mb-6 flex justify-between">
-                <span>{card.badgeRightAr}</span>
-                <span style={{ color: `${card.accentColor}80` }} className="group-hover:opacity-80 transition-colors">{card.badgeLeftAr}</span>
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
-                {card.titleAr}
-            </h3>
-
-            <div className="h-24 w-full flex items-center justify-center gap-2 mt-6">
-                {[...Array(7)].map((_, i) => (
-                    <div
-                        key={i}
-                        className="w-2 rounded-full"
-                        style={{
-                            height: `${20 + Math.random() * 60}px`,
-                            backgroundColor: `${card.accentColor}66`,
-                            animation: `pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
-                            animationDelay: `${i * 0.15}s`,
-                            boxShadow: `0 0 10px ${card.accentColor}80`
-                        }}
-                    />
-                ))}
-                <style dangerouslySetInnerHTML={{
-                    __html: `
-          @keyframes pulse {
-            0%, 100% { opacity: 0.2; transform: scaleY(1); }
-            50% { opacity: 1; transform: scaleY(1.3); box-shadow: 0 0 10px ${card.accentColor}80; }
-          }
-        `}} />
-            </div>
-            <p className="text-gray-500 mt-4 leading-relaxed font-light text-sm">
-                {card.descriptionAr}
-            </p>
-        </div>
-    );
-};
-
-const defaultCards = [
+const defaultCards: HomeServiceCard[] = [
     {
         id: "default-1",
-        titleAr: "قلعة البيانات الموحدة",
-        descriptionAr: "تشفير بمستوى عسكري وبنية تحتية معزولة تضمن حماية كاملة للبيانات وعدم تسريب أي معلومات استراتيجية.",
-        badgeLeftAr: "SECURITY",
-        badgeRightAr: "ARTIFACT_01",
-        iconType: "shuffler",
-        accentColor: "#3b82f6",
-        orderIndex: 1,
-        isActive: true
+        title: "قلعة البيانات الموحدة",
+        description: "تشفير بمستوى عسكري وبنية تحتية معزولة تضمن حماية كاملة للبيانات وعدم تسريب أي معلومات استراتيجية.",
+        label: "SECURITY",
+        image_url: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000",
+        order: 1,
+        is_active: true
     },
     {
         id: "default-2",
-        titleAr: "رصد العملاء في الوقت الفعلي",
-        descriptionAr: "نظام متقدم لتتبع وتحليل سلوك العملاء اللحظي مع تقارير تفصيلية شاملة.",
-        badgeLeftAr: "TELEMETRY",
-        badgeRightAr: "ARTIFACT_02",
-        iconType: "typewriter",
-        accentColor: "#22c55e",
-        orderIndex: 2,
-        isActive: true
+        title: "رصد العملاء في الوقت الفعلي",
+        description: "نظام متقدم لتتبع وتحليل سلوك العملاء اللحظي مع تقارير تفصيلية شاملة.",
+        label: "TELEMETRY",
+        image_url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2000",
+        order: 2,
+        is_active: true
     },
     {
         id: "default-3",
-        titleAr: "توسع فوري — بدون تأخير",
-        descriptionAr: "بنية تحتية سحابية مرنة تتكيف فورياً مع حجم أي حملة تسويقية مهما بلغت.",
-        badgeLeftAr: "PERFORMANCE",
-        badgeRightAr: "ARTIFACT_03",
-        iconType: "scheduler",
-        accentColor: "#a855f7",
-        orderIndex: 3,
-        isActive: true
+        title: "توسع فوري — بدون تأخير",
+        description: "بنية تحتية سحابية مرنة تتكيف فورياً مع حجم أي حملة تسويقية مهما بلغت.",
+        label: "PERFORMANCE",
+        image_url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000",
+        order: 3,
+        is_active: true
     }
 ];
 
 export default function InteractiveFeatures() {
-    const { config } = useConfig();
-    const featureCards = config?.featureCards && config.featureCards.length > 0 ? config.featureCards : defaultCards;
+    const [cards, setCards] = useState<HomeServiceCard[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const renderCard = (card: FeatureCardData) => {
-        switch (card.iconType) {
-            case 'typewriter':
-                return <Typewriter key={card.id} card={card} />;
-            case 'scheduler':
-                return <Scheduler key={card.id} card={card} />;
-            case 'shuffler':
-            default:
-                return <Shuffler key={card.id} card={card} />;
-        }
+    useEffect(() => {
+        const fetchCards = async () => {
+            try {
+                const supabase = createClient(
+                    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+                    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                );
+
+                const { data, error } = await supabase
+                    .from('home_service_cards')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('order', { ascending: true });
+
+                if (error) {
+                    console.error('Error fetching cards:', error);
+                    setCards(defaultCards);
+                } else if (data && data.length > 0) {
+                    setCards(data as HomeServiceCard[]);
+                } else {
+                    setCards(defaultCards);
+                }
+            } catch (error) {
+                console.error('Error in fetch:', error);
+                setCards(defaultCards);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchCards();
+    }, []);
+
+    if (isLoading) {
+        return (
+            <section className="w-full max-w-7xl mx-auto px-6 py-24 relative z-10 flex justify-center min-h-[400px]">
+                <RefreshCw className="w-8 h-8 text-white animate-spin mt-20" />
+            </section>
+        );
+    }
+
+    const renderCard = (card: HomeServiceCard, index: number) => {
+        // We can assign different accent colors based on index to keep the visual variety
+        const colors = ['#3b82f6', '#22c55e', '#a855f7', '#f59e0b', '#ec4899'];
+        const accentColor = colors[index % colors.length];
+
+        return (
+            <div
+                key={card.id}
+                className="rounded-[2rem] bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all duration-500 group relative overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)] flex flex-col h-full"
+                dir="rtl"
+                style={{
+                    boxShadow: `0 0 30px ${accentColor}15`
+                }}
+            >
+                <div className="h-48 sm:h-56 w-full relative overflow-hidden">
+                    <img
+                        src={card.image_url}
+                        alt={card.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+                </div>
+
+                <div className="p-8 flex-1 flex flex-col">
+                    <div className="text-gray-500 text-sm font-mono mb-4 flex justify-between">
+                        <span style={{ color: `${accentColor}80` }} className="group-hover:opacity-80 transition-colors">
+                            {card.label}
+                        </span>
+                    </div>
+
+                    <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">
+                        {card.title}
+                    </h3>
+
+                    <p className="text-gray-500 leading-relaxed font-light text-sm flex-1">
+                        {card.description}
+                    </p>
+                </div>
+            </div>
+        );
     };
 
     return (
         <section className="w-full max-w-7xl mx-auto px-6 py-24 relative z-10" dir="rtl">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {featureCards.filter(card => card.isActive).map(card => renderCard(card))}
+                {cards.map((card, index) => renderCard(card, index))}
             </div>
         </section>
     );

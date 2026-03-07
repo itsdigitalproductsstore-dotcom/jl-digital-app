@@ -11,6 +11,7 @@ import {
 import { useConfig, currencies, type Currency } from "@/context/ConfigContext";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import FeaturesTab from "@/components/admin/FeaturesTab";
+import HomeServiceCardsTab from "@/components/admin/HomeServiceCardsTab";
 import {
   addMarqueeItem,
   updateMarqueeItem,
@@ -51,7 +52,7 @@ import {
 } from "@/app/actions";
 import type { FAQItem } from "@/utils/supabase/server-data";
 
-type TabType = "dashboard" | "hero" | "assets" | "marquee" | "videos" | "features" | "services" | "payments" | "staff" | "leads" | "projects" | "lms" | "pages" | "settings" | "clients";
+type TabType = "dashboard" | "hero" | "assets" | "marquee" | "videos" | "features" | "homecards" | "services" | "payments" | "staff" | "leads" | "projects" | "lms" | "pages" | "settings" | "clients";
 
 interface MarqueeItem {
   id: string;
@@ -201,6 +202,7 @@ export default function AdminDashboardClient({ initialFaqs = [] }: { initialFaqs
     { id: "marquee", label: "شريط التمرير", icon: Film },
     { id: "videos", label: "مركز الفيديو", icon: Film },
     { id: "features", label: "البطاقات المميزة", icon: Star },
+    { id: "homecards", label: "خدمات الواجهة", icon: Image },
     { id: "services", label: "إدارة الخدمات", icon: ShoppingCart },
     { id: "payments", label: "بوابات الدفع", icon: DollarSign },
     { id: "staff", label: "إدارة الموظفين", icon: UserPlus },
@@ -1172,6 +1174,10 @@ export default function AdminDashboardClient({ initialFaqs = [] }: { initialFaqs
 
           {activeTab === "features" && (
             <FeaturesTab />
+          )}
+
+          {activeTab === "homecards" && (
+            <HomeServiceCardsTab />
           )}
 
           {activeTab === "services" && (

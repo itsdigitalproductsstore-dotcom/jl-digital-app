@@ -348,3 +348,32 @@ export async function getFeatureCards(): Promise<FeatureCard[]> {
 
   return data as FeatureCard[]
 }
+
+export interface HomeServiceCard {
+  id: string
+  title: string
+  label: string | null
+  description: string
+  image_url: string
+  order: number
+  is_active: boolean
+  created_at: string
+}
+
+export async function getHomeServiceCards(): Promise<HomeServiceCard[]> {
+  const supabase = await createServerSupabaseClient()
+  const { data, error } = await supabase
+    .from('home_service_cards')
+    .select('*')
+    // We only filter by active on the frontend if needed, or we can fetch all for admin
+    // For admin, we need all. It's better to fetch all and filter in the client component or pass a flag.
+    // However, this file is mostly used by server components like `page.tsx` pulling active ones.
+    // Let's just pull all ordered by 'order' and let the caller filter `is_active === true` if they want.
+    .order('order', { ascending: true })
+
+  if (error) {
+    return []
+  }
+
+  return data as HomeServiceCard[]
+}
