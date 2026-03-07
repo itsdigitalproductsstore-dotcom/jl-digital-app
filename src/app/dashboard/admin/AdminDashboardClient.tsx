@@ -12,6 +12,7 @@ import { useConfig, currencies, type Currency } from "@/context/ConfigContext";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import FeaturesTab from "@/components/admin/FeaturesTab";
 import HomeServiceCardsTab from "@/components/admin/HomeServiceCardsTab";
+import VideosTab from "@/components/admin/VideosTab";
 import {
   addMarqueeItem,
   updateMarqueeItem,
@@ -1083,101 +1084,7 @@ export default function AdminDashboardClient({ initialFaqs = [] }: { initialFaqs
           )}
 
           {activeTab === "videos" && (
-            <div className="space-y-8">
-              <div>
-                <h1 className="text-3xl font-bold mb-2">مركز الفيديو</h1>
-                <p className="text-gray-400">إدارة مقاطع الفيديو المعروضة</p>
-              </div>
-
-              <div className="bg-gradient-to-b from-gray-900/80 to-black border border-gray-800 rounded-[2rem] p-8">
-                <h3 className="text-xl font-bold mb-6">إضافة فيديو جديد</h3>
-                <div className="space-y-4 mb-6">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <input
-                      type="text"
-                      value={newVideo.title}
-                      onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
-                      placeholder="العنوان بالإنجليزية"
-                      className="bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-white focus:outline-none"
-                    />
-                    <input
-                      type="text"
-                      value={newVideo.titleAr}
-                      onChange={(e) => setNewVideo({ ...newVideo, titleAr: e.target.value })}
-                      placeholder="العنوان بالعربية"
-                      className="bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-white focus:outline-none"
-                    />
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <input
-                      type="text"
-                      value={newVideo.description}
-                      onChange={(e) => setNewVideo({ ...newVideo, description: e.target.value })}
-                      placeholder="الوصف بالإنجليزية"
-                      className="bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-white focus:outline-none"
-                    />
-                    <input
-                      type="text"
-                      value={newVideo.descriptionAr}
-                      onChange={(e) => setNewVideo({ ...newVideo, descriptionAr: e.target.value })}
-                      placeholder="الوصف بالعربية"
-                      className="bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-white focus:outline-none"
-                    />
-                  </div>
-                  <input
-                    type="text"
-                    value={newVideo.url}
-                    onChange={(e) => setNewVideo({ ...newVideo, url: e.target.value })}
-                    placeholder="رابط الفيديو (YouTube Embed)"
-                    className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-white focus:outline-none"
-                  />
-                  <button
-                    onClick={handleAddVideo}
-                    className="bg-white text-black px-6 py-3 rounded-xl font-bold hover:bg-gray-200 transition-colors flex items-center gap-2"
-                  >
-                    <Plus className="w-5 h-5" />
-                    إضافة فيديو
-                  </button>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {videos.map((video) => (
-                  <div key={video.id} className="bg-gradient-to-b from-gray-900/80 to-black border border-gray-800 rounded-[2rem] overflow-hidden">
-                    <div className="aspect-video bg-gray-800 flex items-center justify-center">
-                      <Film className="w-12 h-12 text-gray-600" />
-                    </div>
-                    <div className="p-6">
-                      <h4 className="font-bold mb-2">{video.title}</h4>
-                      <p className="text-sm text-gray-400 mb-4">{video.description}</p>
-                      <div className="flex items-center justify-between">
-                        <button
-                          onClick={() => handleToggleVideo(video.id, video.isActive)}
-                          className={`flex items-center gap-2 text-sm ${video.isActive ? 'text-green-400' : 'text-gray-500'}`}
-                        >
-                          {video.isActive ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-                          {video.isActive ? "مفعل" : "معطل"}
-                        </button>
-                        <button
-                          onClick={() => handleDeleteVideo(video.id)}
-                          className="text-red-400 hover:text-red-300"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === "features" && (
-            <FeaturesTab />
-          )}
-
-          {activeTab === "homecards" && (
-            <HomeServiceCardsTab />
+            <VideosTab />
           )}
 
           {activeTab === "services" && (

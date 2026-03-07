@@ -35,17 +35,6 @@ export default function Home() {
       "🏆 حلول تسويق متكاملة",
     ];
 
-  const videos = config?.videos?.filter(v => v.isActive).map(v => ({
-    id: v.id,
-    title: v.title,
-    description: v.description,
-    url: v.url,
-  })) || [
-      { id: "1", title: "مقدمة عن خدماتنا", description: "استكشف كيف نحول وجودك الرقمي", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-      { id: "2", title: "بناء Funnels", description: "شرح تفصيلي لعملية بناء Funnel", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-      { id: "3", title: "استراتيجيات الإعلانات", description: "كيف نضمن عائد استثمار عالي", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-    ];
-
   return (
     <div className="relative min-h-screen font-sans bg-black flex flex-col items-center justify-start overflow-x-hidden">
       <div className="fixed inset-0 opacity-[0.03] pointer-events-none noise-overlay z-0"></div>
@@ -78,7 +67,7 @@ export default function Home() {
 
       <Marquee content={marqueeText} />
 
-      <VideoHub videos={videos} />
+      <VideoHub />
 
       <InteractiveFeatures />
 

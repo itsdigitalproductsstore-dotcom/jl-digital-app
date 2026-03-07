@@ -1,51 +1,54 @@
-"use client";
+'use client';
 
-import { Play, X } from "lucide-react";
-import { useState, useCallback, memo, useRef, useEffect } from "react";
+import { Play, X } from 'lucide-react';
+import { useState, useCallback, memo, useRef, useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js';
 
 interface Video {
   id: string;
   title: string;
-  titleAr?: string;
-  description: string;
-  descriptionAr?: string;
-  url: string;
-  thumbnailUrl?: string;
+  short_description: string | null;
+  video_url: string;
+  order_index: number;
+  is_active: boolean;
 }
 
-interface VideoHubProps {
-  videos?: Video[];
-}
-
-const defaultVideos: Video[] = [
-  {
-    id: "1",
-    title: "مقدمة عن خدماتنا",
-    description: "استكشف كيف نحول وجودك الرقمي",
-    url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  },
-  {
-    id: "2",
-    title: "بناء Funnels",
-    description: "شرح تفصيلي لعملية بناء Funnel",
-    url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  },
-  {
-    id: "3",
-    title: "استراتيجيات الإعلانات",
-    description: "كيف نضمن عائد استثمار عالي",
-    url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-  },
-];
+const defaultVideos: Video[] = [];
 
 function getYouTubeId(url: string): string | null {
   const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
   return match ? match[1] : null;
 }
 
+function getVimeoId(url: string): string | null {
+  const match = url.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
+  return match ? match[1] : null;
+}
+
 function getThumbnailUrl(videoUrl: string): string {
   const videoId = getYouTubeId(videoUrl);
-  return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '';
+  if (videoId) {
+    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  }
+  const vimeoId = getVimeoId(videoUrl);
+  if (vimeoId) {
+    return `https://vumbnail.com/${vimeoId}.jpg`;
+  }
+  return '';
+}
+
+function getEmbedUrl(videoUrl: string): string {
+  const youtubeId = getYouTubeId(videoUrl);
+  if (youtubeId) {
+    return `https://www.youtube.com/embed/${youtubeId}`;
+  }
+  
+  const vimeoId = getVimeoId(videoUrl);
+  if (vimeoId) {
+    return `https://player.vimeo.com/video/${vimeoId}`;
+  }
+  
+  return videoUrl;
 }
 
 const VideoCard = memo(function VideoCard({ 
@@ -57,7 +60,7 @@ const VideoCard = memo(function VideoCard({
 }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const thumbnailUrl = getThumbnailUrl(video.url);
+  const thumbnailUrl = getThumbnailUrl(video.video_url);
   const imgRef = useRef<HTMLImageElement>(null);
   const [isInView, setIsInView] = useState(false);
 
@@ -92,7 +95,9 @@ const VideoCard = memo(function VideoCard({
       </div>
       <div className="absolute bottom-0 left-0 right-0 p-6 z-20 pointer-events-none">
         <h3 className="text-xl font-bold text-white mb-2">{video.title}</h3>
-        <p className="text-gray-400 text-sm">{video.description}</p>
+        {video.short_description && (
+          <p className="text-gray-400 text-sm">{video.short_description}</p>
+        )}
       </div>
       
       {isInView && thumbnailUrl && !imageError ? (
@@ -123,6 +128,9 @@ const VideoPlayer = memo(function VideoPlayer({
   videoUrl: string; 
   onClose: () => void;
 }) {
+  const embedUrl = getEmbedUrl(videoUrl);
+  const isDirectVideo = videoUrl.match(/\.(mp4|webm|ogg)$/i);
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -144,13 +152,22 @@ const VideoPlayer = memo(function VideoPlayer({
         className="relative w-full max-w-6xl aspect-video rounded-[2rem] overflow-hidden bg-black"
         onClick={(e) => e.stopPropagation()}
       >
-        <iframe
-          src={`${videoUrl}?autoplay=1&rel=0`}
-          className="w-full h-full"
-          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-          allowFullScreen
-          title="Video Player"
-        />
+        {isDirectVideo ? (
+          <video
+            src={embedUrl}
+            controls
+            autoPlay
+            className="w-full h-full"
+          />
+        ) : (
+          <iframe
+            src={`${embedUrl}?autoplay=1&rel=0`}
+            className="w-full h-full"
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+            allowFullScreen
+            title="Video Player"
+          />
+        )}
       </div>
       <button
         onClick={onClose}
@@ -163,10 +180,45 @@ const VideoPlayer = memo(function VideoPlayer({
   );
 });
 
-export default function VideoHub({ videos = defaultVideos }: VideoHubProps) {
+export default function VideoHub() {
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
 
-  const validVideos = videos.filter(v => v && v.id && v.url);
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const supabase = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        );
+
+        const { data, error } = await supabase
+          .from('home_videos')
+          .select('*')
+          .eq('is_active', true)
+          .order('order_index', { ascending: true });
+
+        if (error) {
+          console.error('Error fetching videos:', error);
+          setVideos(defaultVideos);
+        } else if (data && data.length > 0) {
+          setVideos(data as Video[]);
+        } else {
+          setVideos(defaultVideos);
+        }
+      } catch (error) {
+        console.error('Error in fetch:', error);
+        setVideos(defaultVideos);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchVideos();
+  }, []);
+
+  const validVideos = videos.filter(v => v && v.id && v.video_url);
 
   const handlePlay = useCallback((videoId: string) => {
     setPlayingVideo(videoId);
@@ -175,6 +227,10 @@ export default function VideoHub({ videos = defaultVideos }: VideoHubProps) {
   const handleClose = useCallback(() => {
     setPlayingVideo(null);
   }, []);
+
+  if (isLoading) {
+    return null;
+  }
 
   if (validVideos.length === 0) {
     return null;
@@ -204,7 +260,7 @@ export default function VideoHub({ videos = defaultVideos }: VideoHubProps) {
 
         {currentVideo && (
           <VideoPlayer
-            videoUrl={currentVideo.url}
+            videoUrl={currentVideo.video_url}
             onClose={handleClose}
           />
         )}

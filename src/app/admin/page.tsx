@@ -84,6 +84,7 @@ import {
     Bell
 } from "lucide-react";
 import HomeServiceCardsTab from "@/components/admin/HomeServiceCardsTab";
+import VideosTab from "@/components/admin/VideosTab";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface Lead {
@@ -1404,7 +1405,7 @@ function PaymentsTab({ isOwner, userEmail }: { isOwner: boolean, userEmail: stri
 // ─── Main Admin Page ──────────────────────────────────────────────────────────
 export default function AdminPage() {
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState<"leads" | "services" | "staff" | "lms" | "payments" | "site_builder" | "homecards">("leads");
+    const [activeTab, setActiveTab] = useState<"leads" | "services" | "staff" | "videos" | "lms" | "payments" | "site_builder" | "homecards">("leads");
     const [leads, setLeads] = useState<Lead[]>([]);
     const [staff, setStaff] = useState<StaffMember[]>([]);
     const [services, setServices] = useState<ServiceItem[]>([]);
@@ -1521,6 +1522,7 @@ export default function AdminPage() {
         { id: "leads", label: "العملاء المحتملون", icon: Users },
         { id: "services", label: "الخدمات", icon: LayoutGrid },
         { id: "staff", label: "الفريق", icon: Users },
+        { id: "videos", label: "مركز الفيديو", icon: Video },
         { id: "lms", label: "البرامج التعليمية", icon: BookOpen },
         { id: "payments", label: "المدفوعات", icon: CreditCard },
         { id: "site_builder", label: "منشئ الموقع", icon: Shield },
@@ -1661,6 +1663,7 @@ export default function AdminPage() {
                     {activeTab === "payments" && <PaymentsTab isOwner={isOwner} userEmail={userEmail} />}
                     {activeTab === "site_builder" && <SiteBuilderTab isOwner={isOwner} />}
                     {activeTab === "homecards" && <HomeServiceCardsTab />}
+                    {activeTab === "videos" && <VideosTab />}
                 </main>
 
                 {/* ── Modal ── */}
