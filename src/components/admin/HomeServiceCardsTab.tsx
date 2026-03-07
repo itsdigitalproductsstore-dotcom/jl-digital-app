@@ -353,7 +353,7 @@ export default function HomeServiceCardsTab({ refreshTrigger }: HomeServiceCards
                                     type="number"
                                     required
                                     value={formData.order_index}
-                                    onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
+                                    onChange={(e) => setFormData({ ...formData, order_index: parseInt(e.target.value) })}
                                     className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-blue-500"
                                 />
                             </div>
