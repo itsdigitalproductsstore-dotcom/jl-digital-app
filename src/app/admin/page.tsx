@@ -83,6 +83,7 @@ import {
     Wind,
     Bell
 } from "lucide-react";
+import HomeServiceCardsTab from "@/components/admin/HomeServiceCardsTab";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface Lead {
@@ -1403,7 +1404,7 @@ function PaymentsTab({ isOwner, userEmail }: { isOwner: boolean, userEmail: stri
 // ─── Main Admin Page ──────────────────────────────────────────────────────────
 export default function AdminPage() {
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState<"leads" | "services" | "staff" | "lms" | "payments" | "site_builder">("leads");
+    const [activeTab, setActiveTab] = useState<"leads" | "services" | "staff" | "lms" | "payments" | "site_builder" | "homecards">("leads");
     const [leads, setLeads] = useState<Lead[]>([]);
     const [staff, setStaff] = useState<StaffMember[]>([]);
     const [services, setServices] = useState<ServiceItem[]>([]);
@@ -1508,6 +1509,7 @@ export default function AdminPage() {
         { id: "lms", label: "البرامج التعليمية", icon: BookOpen },
         { id: "payments", label: "المدفوعات", icon: CreditCard },
         { id: "site_builder", label: "منشئ الموقع", icon: Shield },
+        { id: "homecards", label: "خدمات الواجهة", icon: Layers },
     ] as const;
 
     return (
@@ -1643,6 +1645,7 @@ export default function AdminPage() {
                     {activeTab === "lms" && <LmsTab isOwner={isOwner} />}
                     {activeTab === "payments" && <PaymentsTab isOwner={isOwner} userEmail={userEmail} />}
                     {activeTab === "site_builder" && <SiteBuilderTab isOwner={isOwner} />}
+                    {activeTab === "homecards" && <HomeServiceCardsTab />}
                 </main>
 
                 {/* ── Modal ── */}
