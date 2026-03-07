@@ -1475,7 +1475,11 @@ export default function AdminPage() {
             .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, fetchData)
             .on("postgres_changes", { event: "*", schema: "public", table: "staff" }, fetchData)
             .on("postgres_changes", { event: "*", schema: "public", table: "services_list" }, fetchData)
-            .subscribe((status: any) => setIsConnected(status === "SUBSCRIBED"));
+            .subscribe((status: any) => {
+                if (status === "SUBSCRIBED") {
+                    console.log("Realtime enabled");
+                }
+            });
 
         return () => { supabase.removeChannel(channel); };
     }, [authChecked, fetchData, supabase]);
