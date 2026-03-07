@@ -1425,13 +1425,24 @@ export default function AdminPage() {
     // Auth guard - check role instead of hardcoded email
     useEffect(() => {
         const checkAuth = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) {
+            try {
+                const { data, error } = await supabase.auth.getUser();
+                const user = data?.user;
+                if (error) {
+                    console.error('Auth error:', error);
+                    router.replace("/login");
+                    return;
+                }
+                if (!user) {
+                    router.replace("/login");
+                    return;
+                }
+                setUserEmail(user.email || null);
+                setAuthChecked(true);
+            } catch (err) {
+                console.error('Auth check failed:', err);
                 router.replace("/login");
-                return;
             }
-            setUserEmail(user.email || null);
-            setAuthChecked(true);
         };
         checkAuth();
     }, [router, supabase.auth]);
