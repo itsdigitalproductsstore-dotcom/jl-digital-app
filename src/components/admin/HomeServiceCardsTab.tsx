@@ -14,7 +14,7 @@ interface HomeServiceCard {
     label: string | null;
     description: string;
     image_url: string;
-    order: number;
+    order_index: number;
     is_active: boolean;
     created_at?: string;
 }
@@ -51,7 +51,7 @@ export default function HomeServiceCardsTab({ refreshTrigger }: HomeServiceCards
             const { data, error } = await supabase
                 .from('home_service_cards')
                 .select('*')
-                .order('order', { ascending: true });
+                .order('order_index', { ascending: true });
 
             if (error) throw error;
             setCards(data || []);
@@ -100,7 +100,7 @@ export default function HomeServiceCardsTab({ refreshTrigger }: HomeServiceCards
                         label: formData.label,
                         description: formData.description,
                         image_url: formData.image_url,
-                        order: formData.order,
+                        order_index: formData.order_index,
                         is_active: formData.is_active,
                     })
                     .eq('id', editingId);
@@ -108,7 +108,7 @@ export default function HomeServiceCardsTab({ refreshTrigger }: HomeServiceCards
                 if (error) throw error;
             } else {
                 const maxOrder = cards.length > 0
-                    ? Math.max(...cards.map(c => c.order))
+                    ? Math.max(...cards.map(c => c.order_index))
                     : 0;
 
                 const { error } = await supabase
@@ -142,7 +142,7 @@ export default function HomeServiceCardsTab({ refreshTrigger }: HomeServiceCards
             label: card.label || '',
             description: card.description,
             image_url: card.image_url,
-            order: card.order,
+            order_index: card.order_index,
             is_active: card.is_active
         });
         setShowForm(true);
@@ -188,9 +188,9 @@ export default function HomeServiceCardsTab({ refreshTrigger }: HomeServiceCards
         const swapIndex = direction === 'up' ? index - 1 : index + 1;
 
         // Swap order values
-        const tempOrder = newCards[index].order;
-        newCards[index].order = newCards[swapIndex].order;
-        newCards[swapIndex].order = tempOrder;
+        const tempOrder = newCards[index].order_index;
+        newCards[index].order_index = newCards[swapIndex].order_index;
+        newCards[swapIndex].order_index = tempOrder;
 
         // Swap positions in array for immediate UI update
         const temp = newCards[index];
@@ -203,12 +203,12 @@ export default function HomeServiceCardsTab({ refreshTrigger }: HomeServiceCards
             // Update both cards in database
             const { error: error1 } = await supabase
                 .from('home_service_cards')
-                .update({ order: newCards[index].order })
+                .update({ order_index: newCards[index].order_index })
                 .eq('id', newCards[index].id);
 
             const { error: error2 } = await supabase
                 .from('home_service_cards')
-                .update({ order: newCards[swapIndex].order })
+                .update({ order_index: newCards[swapIndex].order_index })
                 .eq('id', newCards[swapIndex].id);
 
             if (error1 || error2) throw new Error('Failed to reorder');
@@ -227,7 +227,7 @@ export default function HomeServiceCardsTab({ refreshTrigger }: HomeServiceCards
             label: '',
             description: '',
             image_url: '',
-            order: 0,
+        order_index: 0,
             is_active: true
         });
     };
@@ -352,7 +352,7 @@ export default function HomeServiceCardsTab({ refreshTrigger }: HomeServiceCards
                                 <input
                                     type="number"
                                     required
-                                    value={formData.order}
+                                    value={formData.order_index}
                                     onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
                                     className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-blue-500"
                                 />
@@ -447,7 +447,7 @@ export default function HomeServiceCardsTab({ refreshTrigger }: HomeServiceCards
                                     >
                                         ▲
                                     </button>
-                                    <span className="text-sm text-gray-500 w-4 text-center">{card.order}</span>
+                                    <span className="text-sm text-gray-500 w-4 text-center">{card.order_index}</span>
                                     <button
                                         onClick={() => moveCard(index, 'down')}
                                         disabled={index === cards.length - 1}

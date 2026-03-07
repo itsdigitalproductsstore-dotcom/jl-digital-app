@@ -60,7 +60,7 @@ export default function InteractiveFeatures() {
                     .from('home_service_cards')
                     .select('*')
                     .eq('is_active', true)
-                    .order('order', { ascending: true });
+                    .order('order_index', { ascending: true });
 
                 if (error) {
                     console.error('Error fetching cards:', error);
