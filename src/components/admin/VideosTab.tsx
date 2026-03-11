@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { Plus, Trash2, Edit2, Save, X, Eye, EyeOff, RefreshCw, Upload, Image as ImageIcon, Video } from 'lucide-react';
+import { Plus, Trash2, Edit2, Save, X, Eye, EyeOff, RefreshCw, Upload, Image as ImageIcon, Video, ArrowUp, ArrowDown } from 'lucide-react';
 
 interface HomeVideo {
     id: string;
@@ -263,7 +263,7 @@ export default function VideosTab({ refreshTrigger }: VideosTabProps) {
                             placeholder="رابط YouTube أو Vimeo أو ملف فيديو مباشر (mp4)"
                         />
                         <p className="text-gray-500 text-xs mt-1">
-                           支持的链接类型: YouTube, Vimeo, أو روابط فيديو مباشرة (mp4, webm)
+                            أنواع الروابط المدعومة: YouTube, Vimeo, أو روابط فيديو مباشرة (mp4, webm)
                         </p>
                     </div>
 
@@ -311,15 +311,17 @@ export default function VideosTab({ refreshTrigger }: VideosTabProps) {
                                         onClick={() => moveVideo(index, 'up')}
                                         disabled={index === 0}
                                         className="p-1 hover:bg-gray-700 rounded disabled:opacity-30 disabled:hover:bg-transparent"
+                                        title="تحريك لأعلى"
                                     >
-                                        <Eye className="w-4 h-4 text-gray-500" />
+                                        <ArrowUp className="w-4 h-4 text-gray-500" />
                                     </button>
                                     <button
                                         onClick={() => moveVideo(index, 'down')}
                                         disabled={index === videos.length - 1}
                                         className="p-1 hover:bg-gray-700 rounded disabled:opacity-30 disabled:hover:bg-transparent"
+                                        title="تحريك لأسفل"
                                     >
-                                        <EyeOff className="w-4 h-4 text-gray-500" />
+                                        <ArrowDown className="w-4 h-4 text-gray-500" />
                                     </button>
                                 </div>
                                 <div className="w-16 h-12 bg-gray-900 rounded-lg flex items-center justify-center">

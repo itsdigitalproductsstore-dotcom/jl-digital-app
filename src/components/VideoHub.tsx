@@ -1,6 +1,6 @@
 'use client';
 
-import { Play, X } from 'lucide-react';
+import { Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useCallback, memo, useRef, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -84,7 +84,7 @@ const VideoCard = memo(function VideoCard({
 
   return (
     <div
-      className="group relative aspect-video rounded-[2rem] overflow-hidden bg-gray-900 border border-gray-800 hover:border-gray-600 transition-all cursor-pointer"
+      className="group relative aspect-video rounded-[2rem] overflow-hidden bg-gray-900 border border-gray-800 hover:border-gray-600 transition-all cursor-pointer flex-shrink-0 w-full"
       onClick={onPlay}
     >
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10 pointer-events-none" />
@@ -184,6 +184,9 @@ export default function VideoHub() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [slidesPerView, setSlidesPerView] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -218,7 +221,33 @@ export default function VideoHub() {
     fetchVideos();
   }, []);
 
+  useEffect(() => {
+    const updateSlidesPerView = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setSlidesPerView(1);
+      } else if (width < 1024) {
+        setSlidesPerView(2);
+      } else {
+        setSlidesPerView(3);
+      }
+    };
+
+    updateSlidesPerView();
+    window.addEventListener('resize', updateSlidesPerView);
+    return () => window.removeEventListener('resize', updateSlidesPerView);
+  }, []);
+
   const validVideos = videos.filter(v => v && v.id && v.video_url);
+  const totalSlides = Math.max(0, validVideos.length - slidesPerView + 1);
+
+  const handlePrev = useCallback(() => {
+    setCurrentIndex(prev => Math.max(0, prev - 1));
+  }, []);
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex(prev => Math.min(totalSlides - 1, prev + 1));
+  }, [totalSlides]);
 
   const handlePlay = useCallback((videoId: string) => {
     setPlayingVideo(videoId);
@@ -238,6 +267,9 @@ export default function VideoHub() {
 
   const currentVideo = validVideos.find(v => v.id === playingVideo);
 
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const showCarousel = isMobile || validVideos.length > slidesPerView;
+
   return (
     <section className="relative z-10 py-20">
       <div className="max-w-7xl mx-auto px-6">
@@ -248,14 +280,90 @@ export default function VideoHub() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {validVideos.map((video) => (
-            <VideoCard
-              key={video.id}
-              video={video}
-              onPlay={() => handlePlay(video.id)}
-            />
-          ))}
+        <div className="relative">
+          {(showCarousel || validVideos.length > 1) && (
+            <>
+              <button
+                onClick={handlePrev}
+                disabled={currentIndex === 0}
+                className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors disabled:opacity-30 disabled:cursor-not-allowed md:flex hidden`}
+                aria-label="Previous"
+              >
+                <ChevronLeft className="w-6 h-6 text-white" />
+              </button>
+              <button
+                onClick={handleNext}
+                disabled={currentIndex >= totalSlides - 1}
+                className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors disabled:opacity-30 disabled:cursor-not-allowed md:flex hidden`}
+                aria-label="Next"
+              >
+                <ChevronRight className="w-6 h-6 text-white" />
+              </button>
+            </>
+          )}
+
+          <div 
+            ref={containerRef}
+            className="overflow-x-auto scrollbar-hide"
+            style={{ scrollBehavior: 'smooth' }}
+          >
+            <div 
+              className="flex gap-4 md:gap-6"
+              style={{ 
+                transform: `translateX(-${currentIndex * (100 / slidesPerView)}%)`,
+                transition: 'transform 0.3s ease-in-out'
+              }}
+            >
+              {validVideos.map((video) => (
+                <div 
+                  key={video.id} 
+                  className="flex-shrink-0"
+                  style={{ width: `calc(${100 / slidesPerView}% - ${(slidesPerView - 1) * 16 / slidesPerView}px)` }}
+                >
+                  <VideoCard
+                    video={video}
+                    onPlay={() => handlePlay(video.id)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {(showCarousel || validVideos.length > 1) && (
+            <div className="flex justify-center gap-2 mt-6 md:hidden">
+              <button
+                onClick={handlePrev}
+                disabled={currentIndex === 0}
+                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                aria-label="Previous"
+              >
+                <ChevronLeft className="w-5 h-5 text-white" />
+              </button>
+              <span className="flex items-center text-gray-400 text-sm">
+                {currentIndex + 1} / {validVideos.length}
+              </span>
+              <button
+                onClick={handleNext}
+                disabled={currentIndex >= totalSlides - 1}
+                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                aria-label="Next"
+              >
+                <ChevronRight className="w-5 h-5 text-white" />
+              </button>
+            </div>
+          )}
+
+          {!showCarousel && validVideos.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {validVideos.map((video) => (
+                <VideoCard
+                  key={video.id}
+                  video={video}
+                  onPlay={() => handlePlay(video.id)}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {currentVideo && (

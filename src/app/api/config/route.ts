@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getSiteSettings, getMarqueeItems, getVideos, getServices, getFeatureCards, createServerSupabaseClient } from "@/utils/supabase/server-data";
+import { getSiteSettings, getMarqueeItems, getVideos, getServices, getFeatureCards } from "@/utils/supabase/server-data";
+import { createServerSupabaseClient } from "@/utils/supabase/server-only";
 
 export const dynamic = "force-dynamic";
 

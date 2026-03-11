@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createServerSupabaseClient, type SiteSettings, type MarqueeItem, type VideoItem } from "@/utils/supabase/server-data";
-import type { FAQItem } from "@/utils/supabase/server-data";
+import { createServerSupabaseClient } from "@/utils/supabase/server-only";
+import type { SiteSettings, MarqueeItem, VideoItem, FAQItem } from "@/utils/supabase/server-data";
 
 export type { FAQItem };
 

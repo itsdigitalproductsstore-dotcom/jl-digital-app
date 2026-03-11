@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { createServerSupabaseClient } from "@/utils/supabase/server-data";
+import { createServerSupabaseClient } from "@/utils/supabase/server-only";
 
 export const dynamic = 'force-dynamic';
 

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import LeadModal from "@/components/LeadModal";
 import MagneticButton from "@/components/MagneticButton";
-import InteractiveFeatures from "@/components/InteractiveFeatures";
 import StackingCards from "@/components/StackingCards";
 import Marquee from "@/components/Marquee";
 import Header from "@/components/Header";
@@ -68,8 +67,6 @@ export default function Home() {
       <Marquee content={marqueeText} />
 
       <VideoHub />
-
-      <InteractiveFeatures />
 
       <StackingCards />
 
