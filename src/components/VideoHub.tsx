@@ -353,17 +353,8 @@ export default function VideoHub() {
             </div>
           )}
 
-          {!showCarousel && validVideos.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {validVideos.map((video) => (
-                <VideoCard
-                  key={video.id}
-                  video={video}
-                  onPlay={() => handlePlay(video.id)}
-                />
-              ))}
-            </div>
-          )}
+
+
         </div>
 
         {currentVideo && (

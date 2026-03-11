@@ -796,13 +796,13 @@ export default function AdminDashboardClient({ initialFaqs = [] }: { initialFaqs
       <div className="fixed inset-0 opacity-[0.03] pointer-events-none noise-overlay z-0"></div>
 
       <div className="relative z-10 flex">
-        <aside className="w-64 border-l border-gray-800 p-6 hidden lg:block h-screen sticky top-0 overflow-y-auto">
-          <div className="mb-8">
+        <aside className="w-64 border-l border-gray-800 hidden lg:flex flex-col h-screen sticky top-0 bg-black">
+          <div className="p-6 pb-4">
             <h2 className="text-xl font-bold">لوحة التحكم</h2>
             <p className="text-sm text-gray-400">مشرف النظام</p>
           </div>
 
-          <nav className="space-y-2">
+          <nav className="flex-1 overflow-y-auto px-6 space-y-2 pb-4">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -818,7 +818,7 @@ export default function AdminDashboardClient({ initialFaqs = [] }: { initialFaqs
             ))}
           </nav>
 
-          <div className="absolute bottom-6 left-6 right-6">
+          <div className="p-6 pt-4 border-t border-gray-800 mt-auto bg-black">
             <button
               onClick={handleSave}
               disabled={isSaving}
