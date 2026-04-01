@@ -19,7 +19,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-2">
             <h2 className="text-3xl font-bold mb-4">
-              {config?.siteNameAr || "BAYA BUSINESS"}
+              {config?.siteNameAr || "BAYYA BUSINESS"}
             </h2>
             <p className="text-gray-400 mb-6 max-w-md">
               {config?.siteDescriptionAr || "أدوات تسويق رقمي عالية المستوى مبنية على بروتوكول البناء من الصفر لتعزيز نمو المشاريع الناشئة"}
@@ -99,7 +99,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">
-            © 2024 {config?.siteNameAr || "BAYA BUSINESS"}. جميع الحقوق محفوظة.
+            © 2024 {config?.siteNameAr || "BAYYA BUSINESS"}. جميع الحقوق محفوظة.
           </p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="text-gray-500 hover:text-white transition-colors text-sm">

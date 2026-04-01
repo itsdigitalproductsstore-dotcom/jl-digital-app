@@ -77,8 +77,8 @@ interface ConfigContextType {
 }
 
 const defaultConfig: SiteConfig = {
-  siteName: "BAYA BUSINESS",
-  siteNameAr: "BAYA BUSINESS",
+  siteName: "BAYYA BUSINESS",
+  siteNameAr: "BAYYA BUSINESS",
   siteDescription: "أدوات تسويق رقمي عالية المستوى لتعزيز نمو المشاريع الناشئة",
   siteDescriptionAr: "أدوات تسويق رقمي عالية المستوى مبنية على بروتوكول البناء من الصفر لتعزيز نمو المشاريع الناشئة",
   logoUrl: null,

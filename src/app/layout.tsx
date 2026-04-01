@@ -11,9 +11,9 @@ const almarai = Almarai({
 });
 
 export const metadata: Metadata = {
-  title: "BAYA BUSINESS | تسويق رقمي متقدم",
+  title: "BAYYA BUSINESS | تسويق رقمي متقدم",
   description: "أدوات تسويق رقمي عالية المستوى مبنية على بروتوكول البناء من الصفر لتعزيز نمو المشاريع الناشئة",
-  keywords: ["تسويق رقمي", "BAYA BUSINESS", "بناء funnels", "إعلانات", "تسويق المحتوى", "سلطنة عُمان", "اليمن"],
+  keywords: ["تسويق رقمي", "BAYYA BUSINESS", "بناء funnels", "إعلانات", "تسويق المحتوى", "سلطنة عُمان", "اليمن"],
 };
 
 

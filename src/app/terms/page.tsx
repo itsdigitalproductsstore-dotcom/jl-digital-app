@@ -17,7 +17,7 @@ async function getSiteContent() {
 export default async function TermsPage() {
   const content = await getSiteContent();
 
-  const defaultContent = `باستخدامك لموقع BAYA BUSINESS أو شرائك لأي من خدماتنا أو دوراتنا أو منتجاتنا الرقمية، فإنك تقر بأنك قرأت هذه الشروط وفهمتها ووافقت على الالتزام بها. إذا لم توافق على أي جزء منها، يُرجى التوقف عن استخدام الموقع والخدمات.
+  const defaultContent = `باستخدامك لموقع BAYYA BUSINESS أو شرائك لأي من خدماتنا أو دوراتنا أو منتجاتنا الرقمية، فإنك تقر بأنك قرأت هذه الشروط وفهمتها ووافقت على الالتزام بها. إذا لم توافق على أي جزء منها، يُرجى التوقف عن استخدام الموقع والخدمات.
 
 1. نطاق الخدمات
 نُقدّم من خلال هذا الموقع:
@@ -41,7 +41,7 @@ export default async function TermsPage() {
 - بالنسبة للخدمات الاستشارية أو حملات التسويق، يتم تنظيم الاسترجاع حسب الاتفاقية المبرمة.
 
 5. الحقوق الفكرية
-- جميع المحتويات المعروضة على الموقع مملوكة لـ BAYA BUSINESS.
+- جميع المحتويات المعروضة على الموقع مملوكة لـ BAYYA BUSINESS.
 - لا يُسمح بنسخ أو إعادة نشر أو بيع أي جزء من المحتوى دون إذن خطّي مسبق.
 
 6. استخدام الموقع
@@ -69,7 +69,7 @@ export default async function TermsPage() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 sm:px-12 py-24 w-full max-w-4xl mx-auto">
         <div className="space-y-8">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
-            الشروط والأحكام – BAYA BUSINESS
+            الشروط والأحكام – BAYYA BUSINESS
           </h1>
 
           <div className="space-y-6 text-lg text-gray-300 leading-relaxed">

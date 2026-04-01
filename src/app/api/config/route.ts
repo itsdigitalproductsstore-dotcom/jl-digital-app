@@ -43,8 +43,8 @@ export async function GET() {
 
     const responseData = {
       settings: {
-        siteName: settings?.site_name || "BAYA BUSINESS",
-        siteNameAr: settings?.site_name_ar || "BAYA BUSINESS",
+        siteName: settings?.site_name || "BAYYA BUSINESS",
+        siteNameAr: settings?.site_name_ar || "BAYYA BUSINESS",
         siteDescription: settings?.site_description || "أدوات تسويق رقمي عالية المستوى لتعزيز نمو المشاريع الناشئة",
         siteDescriptionAr: settings?.site_description_ar || "أدوات تسويق رقمي عالية المستوى مبنية على بروتوكول البناء من الصفر لتعزيز نمو المشاريع الناشئة",
         logoUrl: settings?.logo_url || null,

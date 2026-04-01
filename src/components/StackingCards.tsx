@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { createClient } from '@supabase/supabase-js';
+import { Briefcase, Target, Users, Globe, Building2, Star, CheckCircle, PenLine, Zap, TrendingUp, Waves, BarChart2, Lightbulb } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,9 +21,9 @@ interface HomeServiceCard {
 const defaultCards: HomeServiceCard[] = [
     {
         id: 'default-1',
-        title: 'الأستاذ فرج (من اليمن)',
+        title: 'الأستاذ فرج',
         label: 'المؤسس والمدير التنفيذي',
-        description: 'خبير استراتيجي في هندسة العلامات التجارية وبناء القواعد الجماهيرية من الصفر. يمتلك الأستاذ فرج رؤية فريدة في تحويل الرؤى التسويقية إلى أصول رقمية راسخة، حيث يُكرّس خبرته لتمكين رواد الأعمال وأصحاب المشاريع الناشئة من إتقان فن استقطاب العملاء وصناعة الولاء، مبتكراً منهجيات تجمع بين العمق التحليلي والبساطة التنفيذية لبناء علامات تجارية عابرة للحدود.',
+        description: 'خبير في إدارة الأعمال وبناء المشاريع الناجحة من الصفر. يرافق الأستاذ فرج المبتدئين في رحلتهم الانتقالية نحو الاستقلالية المالية، عبر اتباع استراتيجيات مدروسة ومجربة بإتقان — من اختيار الفكرة الصحيحة وهندسة نموذج العمل، وصولاً إلى تحقيق أول إيراد حقيقي وبناء منظومة مشروع متينة وقابلة للتوسع.',
         image_url: '',
         order: 1,
         is_active: true,
@@ -30,7 +31,7 @@ const defaultCards: HomeServiceCard[] = [
     {
         id: 'default-2',
         title: 'جاسم محمد',
-        label: 'المؤسس الشريك والمالك المشارك',
+        label: 'الشريك المؤسس',
         description: 'خبرة متعمقة في إدارة الأعمال وبناء المشاريع من الصفر حتى الربحية. يُقدّم جاسم استشارات استراتيجية مدروسة تُساعد رواد الأعمال على بناء نماذج أعمال متينة وقابلة للتوسع.',
         image_url: '',
         order: 2,
@@ -39,14 +40,39 @@ const defaultCards: HomeServiceCard[] = [
     {
         id: 'default-3',
         title: 'ليث أحمد خديش',
-        label: 'المؤسس الشريك والمالك المشارك',
-        description: 'شريك مؤسس ومالك مشارك في BAYA BUSINESS إلى جانب الأستاذ فرج وجاسم محمد. متخصص في صياغة نصوص إعلانية تُحرّك المشاعر وتدفع القرار بدقة حسابية.',
+        label: 'الشريك المؤسس',
+        description: 'شريك مؤسس في BAYYA BUSINESS، متخصص في صياغة نصوص إعلانية تُحرّك المشاعر وتدفع القرار الشرائي بدقة حسابية. يجمع بين الإبداع اللغوي والتحليل التسويقي لبناء رسائل تُفضي إلى نتائج حقيقية.',
         image_url: '',
         order: 3,
         is_active: true,
     },
 ];
 
+type Highlight = { Icon: React.ElementType; text: string };
+
+const highlightSets: Highlight[][] = [
+    // فرج - #1
+    [
+        { Icon: Briefcase, text: 'خبير في إدارة الأعمال وبناء المشاريع' },
+        { Icon: Target, text: 'استراتيجيات مدروسة ومجربة بإتقان' },
+        { Icon: Waves, text: 'يُرافق المبتدئين من الصفر حتى الربح' },
+        { Icon: TrendingUp, text: 'نمو متسارع ومستدام للمشاريع الناشئة' },
+    ],
+    // جاسم - #2
+    [
+        { Icon: Building2, text: 'خبير في تأسيس الشركات وهيكلتها' },
+        { Icon: Star, text: 'استشارات مخصصة لكل مرحلة نمو' },
+        { Icon: Globe, text: 'شريك في BAYYA BUSINESS' },
+        { Icon: CheckCircle, text: 'رؤية تحليلية واستراتيجية عميقة' },
+    ],
+    // ليث - #3
+    [
+        { Icon: PenLine, text: 'كتابة نصوص إعلانية احترافية' },
+        { Icon: Zap, text: 'رسائل تُحرّك القرار الشرائي' },
+        { Icon: BarChart2, text: 'خبرة في التسويق الرقمي المتكامل' },
+        { Icon: Lightbulb, text: 'إبداع لغوي مدعوم بالتحليل' },
+    ],
+];
 
 const accentColors = ['#3b82f6', '#f59e0b', '#8b5cf6', '#22c55e', '#ef4444'];
 
@@ -59,7 +85,7 @@ function mapToCardData(card: HomeServiceCard, index: number) {
         name: card.title,
         tagline: card.label || '',
         body: card.description,
-        highlights: [],
+        highlights: highlightSets[index] || [],
     };
 }
 
@@ -204,6 +230,28 @@ export default function StackingCards() {
                                 <p className="text-gray-300 text-base leading-relaxed mb-6 flex-shrink-0">
                                     {card.body}
                                 </p>
+
+                                {card.highlights.length > 0 && (
+                                    <div className="grid grid-cols-2 gap-2 mt-auto">
+                                        {card.highlights.map((h, i) => (
+                                            <div
+                                                key={i}
+                                                className="flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-medium"
+                                                style={{
+                                                    borderColor: `${card.accentColor}25`,
+                                                    backgroundColor: `${card.accentColor}08`,
+                                                    color: '#d1d5db',
+                                                }}
+                                            >
+                                                <h.Icon
+                                                    className="w-3.5 h-3.5 flex-shrink-0"
+                                                    style={{ color: card.accentColor }}
+                                                />
+                                                <span>{h.text}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     );
