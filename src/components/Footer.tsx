@@ -19,10 +19,10 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-2">
             <h2 className="text-3xl font-bold mb-4">
-              {config?.siteNameAr || "JL Digital"}
+              {config?.siteNameAr || "BAYA BUSINESS"}
             </h2>
             <p className="text-gray-400 mb-6 max-w-md">
-              {config?.siteDescriptionAr || "أدوات تسويق رقمي عالية المستوى مبنية على بروتوكول البناء من الصفر"}
+              {config?.siteDescriptionAr || "أدوات تسويق رقمي عالية المستوى مبنية على بروتوكول البناء من الصفر لتعزيز نمو المشاريع الناشئة"}
             </p>
 
             <div className="flex flex-wrap items-center gap-3 mb-6 brand-badges">
@@ -84,8 +84,8 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4">الشركاء المؤسسون</h3>
             <ul className="space-y-3">
-              <li className="text-gray-300">{config?.partner1 || "جاسم محمد"}</li>
-              <li className="text-gray-300">{config?.partner2 || "ليث أحمد خديش"}</li>
+              <li className="text-gray-300">{config?.partner1 || "الأستاذ فرج"}</li>
+              <li className="text-gray-300">{config?.partner2 || "جاسم محمد"}</li>
             </ul>
             <div className="mt-6 pt-6 border-t border-gray-800">
               <div className="flex items-center gap-2 mb-2 oman-badge">
@@ -99,7 +99,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">
-            © 2024 {config?.siteNameAr || "JL Digital"}. جميع الحقوق محفوظة.
+            © 2024 {config?.siteNameAr || "BAYA BUSINESS"}. جميع الحقوق محفوظة.
           </p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="text-gray-500 hover:text-white transition-colors text-sm">

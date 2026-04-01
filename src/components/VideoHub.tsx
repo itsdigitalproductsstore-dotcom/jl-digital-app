@@ -257,7 +257,13 @@ export default function VideoHub() {
     setPlayingVideo(null);
   }, []);
 
-  if (isLoading) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (isLoading || !mounted) {
     return null;
   }
 
@@ -267,8 +273,7 @@ export default function VideoHub() {
 
   const currentVideo = validVideos.find(v => v.id === playingVideo);
 
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const showCarousel = isMobile || validVideos.length > slidesPerView;
+  const showCarousel = validVideos.length > slidesPerView;
 
   return (
     <section className="relative z-10 py-20">

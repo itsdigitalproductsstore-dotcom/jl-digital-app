@@ -77,10 +77,10 @@ interface ConfigContextType {
 }
 
 const defaultConfig: SiteConfig = {
-  siteName: "JL Digital",
-  siteNameAr: "JL Digital",
-  siteDescription: "أدوات تسويق رقمي عالية المستوى",
-  siteDescriptionAr: "أدوات تسويق رقمي عالية المستوى",
+  siteName: "BAYA BUSINESS",
+  siteNameAr: "BAYA BUSINESS",
+  siteDescription: "أدوات تسويق رقمي عالية المستوى لتعزيز نمو المشاريع الناشئة",
+  siteDescriptionAr: "أدوات تسويق رقمي عالية المستوى مبنية على بروتوكول البناء من الصفر لتعزيز نمو المشاريع الناشئة",
   logoUrl: null,
   faviconUrl: null,
   heroTitle: "Aspirational Growth meets Digital Precision.",
@@ -91,13 +91,14 @@ const defaultConfig: SiteConfig = {
   heroCtaText: "Secure Your Strategy Session",
   heroCtaTextAr: "احجز جلسة استراتيجية",
   currencyRates: { OMR: 1, SAR: 9.75, USD: 2.6, AED: 9.75 },
-  partner1: "جاسم محمد",
-  partner2: "ليث أحمد خديش",
+  partner1: "الأستاذ فرج",
+  partner2: "جاسم محمد",
   originCountry: "سلطنة عُمان",
   marqueeItems: [],
   videos: [],
   featureCards: [],
 };
+
 
 const currencySymbols: Record<Currency, string> = {
   OMR: "ر.ع",

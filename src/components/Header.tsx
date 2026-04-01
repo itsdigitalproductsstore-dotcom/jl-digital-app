@@ -69,8 +69,9 @@ export default function Header() {
           </div>
 
           <Link href="/" className="text-2xl font-bold text-white tracking-tight" dir="rtl">
-            JL Digital
+            BAYA BUSINESS
           </Link>
+
         </div>
 
         {isMobileMenuOpen && (

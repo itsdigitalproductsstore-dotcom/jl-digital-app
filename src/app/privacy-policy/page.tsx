@@ -17,7 +17,7 @@ async function getSiteContent() {
 export default async function PrivacyPolicyPage() {
   const content = await getSiteContent();
 
-  const defaultContent = `نحن في JL Digital Marketing نحترم خصوصية زوّارنا وعملائنا، ونلتزم بحماية البيانات الشخصية التي يتم جمعها ومعالجتها عبر موقعنا الإلكتروني ومنصاتنا الرقمية. تهدف هذه السياسة إلى توضيح نوعية البيانات التي نجمعها، وكيفية استخدامها، وحقوقك تجاهها.
+  const defaultContent = `نحن في BAYA BUSINESS نحترم خصوصية زوّارنا وعملائنا، ونلتزم بحماية البيانات الشخصية التي يتم جمعها ومعالجتها عبر موقعنا الإلكتروني ومنصاتنا الرقمية. تهدف هذه السياسة إلى توضيح نوعية البيانات التي نجمعها، وكيفية استخدامها، وحقوقك تجاهها.
 
 1. البيانات التي نقوم بجمعها
 - بيانات الهوية الأساسية: الاسم الكامل، البريد الإلكتروني، رقم الهاتف، الدولة أو المدينة.
@@ -61,7 +61,7 @@ export default async function PrivacyPolicyPage() {
 
 9. التواصل معنا
 لأي استفسار بخصوص سياسة الخصوصية أو استخدام بياناتك، يمكنك التواصل معنا عبر:
-- البريد الإلكتروني: support@jldigitalmarketing.com
+- البريد الإلكتروني: support@bayabusiness.com
 - نموذج التواصل داخل الموقع`;
 
   const privacyText = content?.privacy_policy || defaultContent;
@@ -76,7 +76,7 @@ export default async function PrivacyPolicyPage() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 sm:px-12 py-24 w-full max-w-4xl mx-auto">
         <div className="space-y-8">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
-            سياسة الخصوصية – JL Digital Marketing
+            سياسة الخصوصية – BAYA BUSINESS
           </h1>
 
           <div className="space-y-6 text-lg text-gray-300 leading-relaxed">

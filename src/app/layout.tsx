@@ -11,10 +11,11 @@ const almarai = Almarai({
 });
 
 export const metadata: Metadata = {
-  title: "JL Digital | تسويق رقمي متقدم",
-  description: "أدوات تسويق رقمي عالية المستوى مبنية على بروتوكول البناء من الصفر",
-  keywords: ["تسويق رقمي", "بناء funnels", "إعلانات", "تسويق المحتوى", "سلطنة عُمان"],
+  title: "BAYA BUSINESS | تسويق رقمي متقدم",
+  description: "أدوات تسويق رقمي عالية المستوى مبنية على بروتوكول البناء من الصفر لتعزيز نمو المشاريع الناشئة",
+  keywords: ["تسويق رقمي", "BAYA BUSINESS", "بناء funnels", "إعلانات", "تسويق المحتوى", "سلطنة عُمان", "اليمن"],
 };
+
 
 export default function RootLayout({
   children,

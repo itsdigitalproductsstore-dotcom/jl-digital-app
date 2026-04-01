@@ -43,10 +43,10 @@ export async function GET() {
 
     const responseData = {
       settings: {
-        siteName: settings?.site_name || "JL Digital",
-        siteNameAr: settings?.site_name_ar || "JL Digital",
-        siteDescription: settings?.site_description || "أدوات تسويق رقمي عالية المستوى",
-        siteDescriptionAr: settings?.site_description_ar || "أدوات تسويق رقمي عالية المستوى",
+        siteName: settings?.site_name || "BAYA BUSINESS",
+        siteNameAr: settings?.site_name_ar || "BAYA BUSINESS",
+        siteDescription: settings?.site_description || "أدوات تسويق رقمي عالية المستوى لتعزيز نمو المشاريع الناشئة",
+        siteDescriptionAr: settings?.site_description_ar || "أدوات تسويق رقمي عالية المستوى مبنية على بروتوكول البناء من الصفر لتعزيز نمو المشاريع الناشئة",
         logoUrl: settings?.logo_url || null,
         faviconUrl: settings?.favicon_url || null,
         heroTitle: siteContent?.hero_title || settings?.hero_title || "Aspirational Growth meets Digital Precision.",
@@ -57,8 +57,8 @@ export async function GET() {
         heroCtaText: siteContent?.hero_cta_primary || settings?.hero_cta_text || "Secure Your Strategy Session",
         heroCtaTextAr: siteContent?.hero_cta_primary || settings?.hero_cta_text_ar || "احجز جلسة استراتيجية",
         currencyRates: settings?.currency_rates || defaultCurrencyRates,
-        partner1: settings?.partner_1 || "جاسم محمد",
-        partner2: settings?.partner_2 || "ليث أحمد خديش",
+        partner1: settings?.partner_1 || "الأستاذ فرج",
+        partner2: settings?.partner_2 || "جاسم محمد",
         originCountry: settings?.origin_country || "سلطنة عُمان",
         marqueeItems: marqueeItems.length > 0 ? marqueeItems.map(item => ({
           id: item.id,
