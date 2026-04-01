@@ -20,7 +20,7 @@ export default function Header() {
 
   const navLinks = [
     { href: "/services", label: "الخدمات" },
-    { href: "/academy", label: "JL Community" },
+    { href: "/academy", label: "BAYYA Community" },
     { href: "/pricing", label: "التسعير" },
     { href: "/about", label: "من نحن" },
     { href: "/faq", label: "الأسئلة الشائعة" },

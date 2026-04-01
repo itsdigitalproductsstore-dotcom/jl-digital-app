@@ -72,7 +72,7 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-4">الخدمات</h3>
             <ul className="space-y-3">
               <li><Link href="/services/funnels" className="text-gray-400 hover:text-white transition-colors">بناء Funnels</Link></li>
-              <li><Link href="/academy" className="text-purple-400 font-bold hover:text-purple-300 transition-colors">JL Community</Link></li>
+              <li><Link href="/academy" className="text-purple-400 font-bold hover:text-purple-300 transition-colors">BAYYA Community</Link></li>
               <li><Link href="/services/ads" className="text-gray-400 hover:text-white transition-colors">الإعلانات المدفوعة</Link></li>
               <li><Link href="/services/content" className="text-gray-400 hover:text-white transition-colors">إنتاج المحتوى</Link></li>
               <li><Link href="/services/branding" className="text-gray-400 hover:text-white transition-colors">هوية العلامة</Link></li>
