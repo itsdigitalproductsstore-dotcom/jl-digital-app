@@ -6,6 +6,7 @@ import { createClient } from '@/utils/supabase/server'
 
 export async function login(formData: FormData) {
     const supabase = await createClient()
+    const redirectPath = formData.get('redirect') as string || '/dashboard/admin'
 
     const data = {
         email: formData.get('email') as string,
@@ -13,7 +14,7 @@ export async function login(formData: FormData) {
     }
 
     if (!data.email || !data.password) {
-        redirect('/login?error=يرجى إدخال البريد الإلكتروني وكلمة المرور')
+        redirect(`/login?redirect=${encodeURIComponent(redirectPath)}&error=يرجى إدخال البريد الإلكتروني وكلمة المرور`)
     }
 
     const { error } = await supabase.auth.signInWithPassword(data)
@@ -28,9 +29,9 @@ export async function login(formData: FormData) {
                 ? 'يرجى تأكيد البريد الإلكتروني أولاً'
                 : 'حدث خطأ أثناء تسجيل الدخول. يرجى المحاولة مرة أخرى'
         )
-        redirect(`/login?error=${errorMessage}`)
+        redirect(`/login?redirect=${encodeURIComponent(redirectPath)}&error=${errorMessage}`)
     }
 
     revalidatePath('/', 'layout')
-    redirect('/dashboard/admin')
+    redirect(redirectPath)
 }

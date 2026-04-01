@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Plus, Minus, RefreshCw } from "lucide-react";
-import { getFAQItems, type FAQItem } from "@/app/actions";
+import { getFAQItems } from "@/app/actions";
+import type { FAQItem } from "@/types/database";
 
 const defaultFaqs: FAQItem[] = [
   { question: "ما الخدمات الرئيسية التي تقدمها BAYYA BUSINESS؟", question_ar: "ما الخدمات الرئيسية التي تقدمها BAYYA BUSINESS؟", answer: "نُقدّم حزمة خدمات تسويق رقمي متكاملة تشمل: بناء الفنلات وصفحات الهبوط، إدارة الحملات الإعلانية المدفوعة، كتابة المحتوى والكوبي الإعلاني، إعداد الأنظمة الآلية (Automation)، الاستشارات الفردية، بالإضافة إلى الدورات والمنتجات الرقمية المتخصصة في التسويق وتحويل المبيعات.", answer_ar: "نُقدّم حزمة خدمات تسويق رقمي متكاملة تشمل: بناء الفنلات وصفحات الهبوط، إدارة الحملات الإعلانية المدفوعة، كتابة المحتوى والكوبي الإعلاني، إعداد الأنظمة الآلية (Automation)، الاستشارات الفردية، بالإضافة إلى الدورات والمنتجات الرقمية المتخصصة في التسويق وتحويل المبيعات." },

@@ -1,8 +1,9 @@
 import { login } from './actions'
 
-export default async function LoginPage(props: { searchParams: Promise<{ error?: string }> }) {
+export default async function LoginPage(props: { searchParams: Promise<{ error?: string, redirect?: string }> }) {
     const searchParams = await props.searchParams;
     const error = searchParams?.error;
+    const redirectPath = searchParams?.redirect;
 
     return (
         <div className="relative min-h-screen flex items-center justify-center bg-black p-4">
@@ -19,6 +20,7 @@ export default async function LoginPage(props: { searchParams: Promise<{ error?:
                 )}
 
                 <form action={login} className="space-y-4">
+                    <input type="hidden" name="redirect" value={redirectPath || "/dashboard/admin"} />
                     <div>
                         <input
                             id="email"

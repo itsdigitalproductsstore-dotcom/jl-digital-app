@@ -2,7 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { createServerSupabaseClient } from "@/utils/supabase/server-only";
-import type { SiteSettings, MarqueeItem, VideoItem, FAQItem } from "@/utils/supabase/server-data";
+import type { 
+  SiteSettings, 
+  MarqueeItem, 
+  VideoItem, 
+  FAQItem,
+  Service as ServiceItem 
+} from "@/types/database";
 
 export type { FAQItem };
 
@@ -315,27 +321,6 @@ export async function updateHeroContent(
 
   revalidatePath('/');
   return { success: true };
-}
-
-export interface ServiceItem {
-  id: string;
-  slug: string;
-  title: string;
-  title_ar: string;
-  subtitle: string;
-  subtitle_ar: string;
-  description: string;
-  description_ar: string;
-  features: string[];
-  features_ar: string[];
-  pricing_basic: number;
-  pricing_pro: number;
-  pricing_enterprise: number;
-  timeline: string;
-  timeline_ar: string;
-  icon: string;
-  is_active: boolean;
-  order: number;
 }
 
 export async function addService(

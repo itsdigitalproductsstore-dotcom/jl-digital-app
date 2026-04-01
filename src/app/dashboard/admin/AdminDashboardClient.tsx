@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
   Upload, Image, Film, FileText, Save,
   Eye, EyeOff, Plus, Trash2, Edit2, Settings,
-  DollarSign, Users, TrendingUp, ShoppingCart,
+  DollarSign, Users, TrendingUp, ShoppingCart, Target,
   RefreshCw, X, UserPlus, Briefcase, CheckCircle,
   Clock, Play, Folder, Star, User, Archive, Download
 } from "lucide-react";
@@ -51,9 +51,11 @@ import {
   updatePageContent,
   getFAQItems,
 } from "@/app/actions";
-import type { FAQItem } from "@/utils/supabase/server-data";
+import { getKPIMetrics, getWebhookApiKey, type KPIMetric } from "@/app/actions/kpiActions";
+import KPIManagement from "@/components/admin/KPIManagement";
+import type { FAQItem } from "@/types/database";
 
-type TabType = "dashboard" | "hero" | "assets" | "marquee" | "videos" | "features" | "homecards" | "services" | "payments" | "staff" | "leads" | "projects" | "lms" | "pages" | "settings" | "clients";
+type TabType = "dashboard" | "kpis" | "hero" | "assets" | "marquee" | "videos" | "features" | "homecards" | "services" | "payments" | "staff" | "leads" | "projects" | "lms" | "pages" | "settings" | "clients";
 
 interface MarqueeItem {
   id: string;
@@ -196,8 +198,13 @@ export default function AdminDashboardClient({ initialFaqs = [] }: { initialFaqs
   const [isFaqLoading, setIsFaqLoading] = useState(false);
   const [editingFaqIndex, setEditingFaqIndex] = useState<number | null>(null);
 
+  const [kpiMetrics, setKpiMetrics] = useState<KPIMetric[]>([]);
+  const [webhookApiKey, setWebhookApiKey] = useState<string | null>(null);
+  const [isKpiLoading, setIsKpiLoading] = useState(false);
+
   const tabs = [
     { id: "dashboard", label: "لوحة التحكم", icon: TrendingUp },
+    { id: "kpis", label: "مؤشرات الأداء (KPIs)", icon: Target },
     { id: "hero", label: "القسم الرئيسي", icon: Image },
     { id: "assets", label: "أصول الموقع", icon: Image },
     { id: "marquee", label: "شريط التمرير", icon: Film },
@@ -278,7 +285,26 @@ export default function AdminDashboardClient({ initialFaqs = [] }: { initialFaqs
     if (activeTab === "pages") {
       loadFaqs();
     }
+    if (activeTab === "kpis" || activeTab === "dashboard") {
+      loadKPIs();
+    }
   }, [activeTab]);
+
+  const loadKPIs = async () => {
+    setIsKpiLoading(true);
+    try {
+      const [metrics, apiKey] = await Promise.all([
+        getKPIMetrics(),
+        getWebhookApiKey()
+      ]);
+      setKpiMetrics(metrics);
+      setWebhookApiKey(apiKey);
+    } catch (error) {
+      console.error("Failed to load KPIs:", error);
+    } finally {
+      setIsKpiLoading(false);
+    }
+  };
 
   const loadFaqs = async () => {
     setIsFaqLoading(true);
@@ -839,56 +865,90 @@ export default function AdminDashboardClient({ initialFaqs = [] }: { initialFaqs
         <main className="flex-1 p-8 overflow-y-auto">
           {activeTab === "dashboard" && (
             <div className="space-y-8">
+              <div className="flex justify-between items-end">
+                <div>
+                  <h1 className="text-3xl font-bold mb-2">لوحة التحكم</h1>
+                  <p className="text-gray-400">نظرة عامة على أداء العمليات (Real-time KPIs)</p>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-zinc-500 bg-zinc-900/50 px-3 py-1.5 rounded-full border border-zinc-800">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>آخر تحديث: {kpiMetrics.length > 0 ? new Date(kpiMetrics[0].updated_at).toLocaleTimeString('ar-EG') : '...'}</span>
+                </div>
+              </div>
+
+              {isKpiLoading ? (
+                <div className="grid lg:grid-cols-4 gap-6 animate-pulse">
+                  {[1, 2, 3, 4].map(i => (
+                    <div key={i} className="h-32 bg-zinc-900/50 rounded-[2rem] border border-zinc-800" />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid lg:grid-cols-4 gap-6">
+                  {kpiMetrics.slice(0, 4).map((metric) => {
+                    const ratio = metric.target_month > 0 ? (metric.actual_value / metric.target_month) * 100 : 0;
+                    const isPositive = ratio >= 100;
+                    
+                    return (
+                      <div key={metric.id} className="bg-gradient-to-b from-gray-900/80 to-black border border-gray-800 rounded-[2rem] p-6 hover:border-zinc-600 transition-all group">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className={`w-12 h-12 ${isPositive ? 'bg-green-500/10' : 'bg-blue-500/10'} rounded-2xl flex items-center justify-center border border-white/5`}>
+                             {metric.metric_key === 'revenue' ? <DollarSign className="w-6 h-6 text-green-400" /> : 
+                              metric.metric_key === 'leads' ? <Users className="w-6 h-6 text-blue-400" /> : 
+                              metric.metric_key === 'manychat_subscribers' ? <TrendingUp className="w-6 h-6 text-purple-400" /> : 
+                              <ShoppingCart className="w-6 h-6 text-yellow-400" />}
+                          </div>
+                          <span className={`text-xs font-bold ${ratio >= 100 ? 'text-green-400' : 'text-zinc-500'}`}>
+                            {ratio.toFixed(0)}% Target
+                          </span>
+                        </div>
+                        <p className="text-gray-400 text-xs mb-1 font-medium">{metric.metric_name_ar}</p>
+                        <div className="flex items-baseline gap-2">
+                          <p className="text-3xl font-bold font-mono">
+                            {metric.unit === 'currency' ? metric.actual_value.toLocaleString() : metric.actual_value}
+                          </p>
+                          <span className="text-[10px] text-zinc-600">{metric.unit === 'currency' ? 'ر.ع' : ''}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Secondary Metrics Row */}
+              <div className="grid lg:grid-cols-3 gap-6 pt-4">
+                 {kpiMetrics.slice(4).map((metric) => {
+                    const ratio = metric.target_month > 0 ? (metric.actual_value / metric.target_month) * 100 : 0;
+                    return (
+                      <div key={metric.id} className="bg-zinc-900/30 border border-zinc-800/50 rounded-2xl p-5 flex items-center gap-4">
+                        <div className="w-10 h-10 bg-zinc-800 rounded-xl flex items-center justify-center">
+                          <Target className="w-5 h-5 text-zinc-500" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-xs text-zinc-500 mb-0.5">{metric.metric_name_ar}</p>
+                          <div className="flex justify-between items-baseline">
+                            <span className="text-xl font-bold font-mono">{metric.actual_value}</span>
+                            <span className="text-[10px] text-zinc-600">Goal: {metric.target_month}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                 })}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "kpis" && (
+            <div className="space-y-8">
               <div>
-                <h1 className="text-3xl font-bold mb-2">لوحة التحكم</h1>
-                <p className="text-gray-400">نظرة عامة على أداء الموقع</p>
+                <h1 className="text-3xl font-bold mb-2">إدارة مؤشرات الأداء (KPIs)</h1>
+                <p className="text-gray-400">تحديث الأهداف الشهرية وإعدادات الربط الآلي</p>
               </div>
 
-              <div className="grid lg:grid-cols-4 gap-6">
-                <div className="bg-gradient-to-b from-gray-900/80 to-black border border-gray-800 rounded-[2rem] p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
-                      <DollarSign className="w-6 h-6 text-green-400" />
-                    </div>
-                    <span className="text-green-400 text-sm">+12.5%</span>
-                  </div>
-                  <p className="text-gray-400 text-sm">إجمالي الإيرادات</p>
-                  <p className="text-3xl font-bold">132,600 ر.ع</p>
-                </div>
-
-                <div className="bg-gradient-to-b from-gray-900/80 to-black border border-gray-800 rounded-[2rem] p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-                      <Users className="w-6 h-6 text-blue-400" />
-                    </div>
-                    <span className="text-green-400 text-sm">+8.2%</span>
-                  </div>
-                  <p className="text-gray-400 text-sm">إجمالي العملاء</p>
-                  <p className="text-3xl font-bold">47</p>
-                </div>
-
-                <div className="bg-gradient-to-b from-gray-900/80 to-black border border-gray-800 rounded-[2rem] p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                      <ShoppingCart className="w-6 h-6 text-purple-400" />
-                    </div>
-                    <span className="text-green-400 text-sm">+15.3%</span>
-                  </div>
-                  <p className="text-gray-400 text-sm">الطلبات النشطة</p>
-                  <p className="text-3xl font-bold">23</p>
-                </div>
-
-                <div className="bg-gradient-to-b from-gray-900/80 to-black border border-gray-800 rounded-[2rem] p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
-                      <TrendingUp className="w-6 h-6 text-yellow-400" />
-                    </div>
-                    <span className="text-green-400 text-sm">+5.7%</span>
-                  </div>
-                  <p className="text-gray-400 text-sm">معدل التحويل</p>
-                  <p className="text-3xl font-bold">24.8%</p>
-                </div>
-              </div>
+              <KPIManagement 
+                metrics={kpiMetrics} 
+                onRefresh={loadKPIs} 
+                webhookApiKey={webhookApiKey}
+              />
             </div>
           )}
 

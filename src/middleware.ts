@@ -4,9 +4,10 @@ import { NextResponse, type NextRequest } from 'next/server'
 // Routes and their access requirements
 const protectedRoutes: Record<string, { requireAuth: boolean; roles?: string[] }> = {
   '/admin': { requireAuth: true, roles: ['owner', 'admin'] },
+  '/dashboard/admin': { requireAuth: true, roles: ['owner', 'admin'] },
+  '/dashboard/staff': { requireAuth: true, roles: ['staff', 'owner', 'admin'] },
+  '/dashboard/client': { requireAuth: true, roles: ['client', 'owner', 'admin'] },
   '/dashboard': { requireAuth: true, roles: ['owner', 'admin', 'staff', 'client'] },
-  '/dashboard/staff': { requireAuth: true, roles: ['staff'] },
-  '/dashboard/client': { requireAuth: true, roles: ['client'] },
   // Academy learn/community/live pages require auth — enrollment is verified by RLS + API
   '/academy': { requireAuth: true },
 }
