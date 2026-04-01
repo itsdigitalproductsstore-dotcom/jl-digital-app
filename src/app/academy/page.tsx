@@ -31,82 +31,72 @@ export default function AcademyPage() {
 
     useEffect(() => {
         const init = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            setUser(user);
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                setUser(user);
 
-            // Fetch published courses
-            const { data: coursesData } = await supabase
-                .from('academy_courses')
-                .select('*')
-                .eq('is_published', true)
-                .order('created_at', { ascending: false });
+                // Fetch published courses
+                const { data: coursesData } = await supabase
+                    .from('academy_courses')
+                    .select('*')
+                    .eq('is_published', true)
+                    .order('created_at', { ascending: false });
 
-            // Fetch active live sessions
-            const { data: liveRes } = await supabase
-                .from('academy_live_sessions')
-                .select('*, academy_courses(title_ar)')
-                .eq('is_active', true);
-            setLiveSessions(liveRes || []);
+                // Fetch active live sessions
+                const { data: liveRes } = await supabase
+                    .from('academy_live_sessions')
+                    .select('*, academy_courses(title_ar)')
+                    .eq('is_active', true);
+                setLiveSessions(liveRes || []);
 
-            if (coursesData) {
-                // Fetch ratings
-                const coursesWithRatings = await Promise.all(coursesData.map(async (c: any) => {
-                    const { data: reviews } = await supabase
-                        .from('academy_reviews')
-                        .select('rating')
-                        .eq('course_id', c.id);
+                if (coursesData) {
+                    const coursesWithRatings = await Promise.all(coursesData.map(async (c: any) => {
+                        const { data: reviews } = await supabase
+                            .from('academy_reviews')
+                            .select('rating')
+                            .eq('course_id', c.id);
 
-                    const avg = reviews?.length
-                        ? reviews.reduce((sum: any, r: any) => sum + r.rating, 0) / reviews.length
-                        : 0;
+                        const avg = reviews?.length
+                            ? reviews.reduce((sum: any, r: any) => sum + r.rating, 0) / reviews.length
+                            : 0;
 
-                    return { ...c, avg_rating: avg, review_count: reviews?.length || 0 };
-                }));
-                setCourses(coursesWithRatings);
-            }
-
-            // Fetch user enrollments and progress
-            if (user) {
-                const { data: enrollments } = await supabase
-                    .from('academy_enrollments')
-                    .select('course_id')
-                    .eq('user_id', user.id)
-                    .eq('status', 'active');
-
-                if (enrollments) {
-                    const enrolledIds = enrollments.map((e: any) => e.course_id);
-                    setMyCourses(enrolledIds);
-
-                    // Fetch progress for each enrolled course
-                    const progressData: Record<string, number> = {};
-                    await Promise.all(enrolledIds.map(async (courseId: any) => {
-                        const [lessonsRes, progRes] = await Promise.all([
-                            supabase.from('academy_lessons').select('id', { count: 'exact' }).filter('academy_modules.course_id', 'eq', courseId),
-                            supabase.from('academy_progress').select('lesson_id', { count: 'exact' }).eq('user_id', user.id).eq('course_id', courseId)
-                        ]);
-
-                        // Note: The lessons query above is tricky due to joins. 
-                        // Simpler fallback: just count progress vs total lessons we'll fetch separately if needed
-                        // But let's refine this below.
-
-                        const { data: allL } = await supabase.rpc('get_course_lesson_count', { cid: courseId });
-                        // If RPC not available, we use a slower query
-                        const { count: total } = await supabase.from('academy_lessons')
-                            .select('id', { count: 'exact', head: true })
-                            .eq('course_id', courseId); // This depends on schema, let's check schema for lessons
-
-                        const { count: done } = await supabase.from('academy_progress')
-                            .select('lesson_id', { count: 'exact', head: true })
-                            .eq('user_id', user.id)
-                            .eq('course_id', courseId);
-
-                        progressData[courseId] = total ? Math.round(((done || 0) / total) * 100) : 0;
+                        return { ...c, avg_rating: avg, review_count: reviews?.length || 0 };
                     }));
-                    setCourseProgress(progressData);
+                    setCourses(coursesWithRatings);
                 }
-            }
 
-            setLoading(false);
+                if (user) {
+                    const { data: enrollments } = await supabase
+                        .from('academy_enrollments')
+                        .select('course_id')
+                        .eq('user_id', user.id)
+                        .eq('status', 'active');
+
+                    if (enrollments) {
+                        const enrolledIds = enrollments.map((e: any) => e.course_id);
+                        setMyCourses(enrolledIds);
+
+                        const progressData: Record<string, number> = {};
+                        await Promise.all(enrolledIds.map(async (courseId: any) => {
+                            const { count: total } = await supabase.from('academy_lessons')
+                                .select('id', { count: 'exact', head: true })
+                                .eq('course_id', courseId);
+
+                            const { count: done } = await supabase.from('academy_progress')
+                                .select('lesson_id', { count: 'exact', head: true })
+                                .eq('user_id', user.id)
+                                .eq('course_id', courseId);
+
+                            progressData[courseId] = total ? Math.round(((done || 0) / total) * 100) : 0;
+                        }));
+                        setCourseProgress(progressData);
+                    }
+                }
+            } catch (err) {
+                console.error('Academy load error:', err);
+            } finally {
+                setLoading(false);
+            }
         };
         init();
     }, []);
